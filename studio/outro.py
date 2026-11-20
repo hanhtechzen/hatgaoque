@@ -59,8 +59,9 @@ def outro_image(cfg: dict) -> Path | None:
     return _fallback_from_ref()
 
 
-def scene(cfg: dict) -> dict | None:
-    """Cảnh kết dạng 1 'scene' để ghép vào cuối kịch bản (đã có sẵn ảnh, không cần tạo)."""
+def scene(cfg: dict, script: dict | None = None) -> dict | None:
+    """Cảnh kết dạng 1 'scene' để ghép vào cuối kịch bản (đã có sẵn ảnh, không cần tạo).
+    Kịch bản có thể tự đặt lời mời riêng (vd phần 1: "để xem PHẦN 2 nhé!")."""
     ocfg = cfg.get("video", {}).get("outro", {})
     if not ocfg.get("enabled", True):
         return None
@@ -68,10 +69,11 @@ def scene(cfg: dict) -> dict | None:
     if not img:
         log("  (bỏ qua cảnh kết: chưa có ảnh mẫu Bin)")
         return None
+    script = script or {}
     return {
         "_outro": True,
-        "text": ocfg.get("voice", "Theo dõi Hạt Gạo Quê để xem tập sau nha!"),
-        "_cta": ocfg.get("text", "Theo dõi HẠT GẠO QUÊ\\Nđể xem tập sau nhé!"),
+        "text": script.get("outro_voice") or ocfg.get("voice", "Theo dõi Hạt Gạo Quê để xem tập sau nha!"),
+        "_cta": script.get("outro_text") or ocfg.get("text", "Theo dõi HẠT GẠO QUÊ\\Nđể xem tập sau nhé!"),
         "_image": str(img),
         "images": [],
     }

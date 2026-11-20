@@ -13,7 +13,9 @@
   },
   "ONG": {
     "name": "Ông nội",
-    "look": "Grandpa: gentle old Vietnamese man about 75, short white hair, thin white goatee, beige shirt"
+    "look": "Grandpa: gentle old Vietnamese man about 75, short white hair, thin white goatee, beige shirt",
+    "ref_url": "https://media.pollinations.ai/bfbbecba-714f-4d2c-8129-c61958d3b3c6",
+    "ref_uploaded": "2026-11-20"
   },
   "ME": {
     "name": "Mẹ",
@@ -26,5 +28,19 @@
   "BANBE": {
     "name": "Bạn của Bin",
     "look": "village kids: cute chubby Vietnamese children in colorful 1990s clothes"
+  },
+  "VANG": {
+    "name": "Chó Vàng",
+    "look": "Vang: a cute chubby yellow Vietnamese village dog with floppy ears, a curly tail and a red collar, friendly happy face",
+    "ref_url": "https://media.pollinations.ai/2b8e144d-f4d8-4ff5-a57d-c9b29f0244da",
+    "ref_uploaded": "2026-11-20"
+  },
+  "TEO": {
+    "name": "Bạn Tèo",
+    "look": "Teo: a skinny cheeky 5-year-old Vietnamese boy, buzz-cut black hair, big grin with a missing front tooth, white tank top and green shorts"
+  },
+  "CO": {
+    "name": "Cô giáo Hoa",
+    "look": "Teacher Hoa: a kind young Vietnamese female teacher with long black hair, wearing a white ao dai and holding a chalk"
   }
 }

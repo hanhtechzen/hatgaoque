@@ -41,7 +41,7 @@ def build(script: dict, cfg: dict) -> Path:
     wavs = tts.synth_scenes(script["scenes"], work, cfg)
     imgs = images.generate(script, work, cfg)
     clips = motion.animate(script, imgs, work, cfg, wavs)
-    end = outro.scene(cfg)
+    end = outro.scene(cfg, script)
     if end:
         from PIL import Image
 
@@ -54,7 +54,15 @@ def build(script: dict, cfg: dict) -> Path:
         imgs.append([oimg])
         script["scenes"].append(end)
     video.assemble(script, wavs, imgs, out, work, cfg, clips)
-    shutil.copy(imgs[0][0], out / "cover.jpg")
+    from . import cover
+
+    try:
+        part = (script["part"], script["parts_total"]) if script.get("part") and script.get("parts_total") else None
+        cover.make_cover(imgs[0][0], out / "cover.jpg", script.get("hook") or script["title"], cfg,
+                         script.get("_episode"), part)
+    except Exception as e:
+        log(f"  ảnh bìa lỗi ({e}), dùng ảnh cảnh đầu")
+        shutil.copy(imgs[0][0], out / "cover.jpg")
     (out / "caption.txt").write_text(caption_text(script, cfg), encoding="utf-8")
     cost = script.get("_cost_images", 0.0) + script.get("_cost_motion", 0.0)
     vnd = cost * float(cfg.get("usd_to_vnd", 26000))
@@ -78,6 +86,11 @@ def publish(out: Path, cfg: dict, s: dict) -> dict | None:
     times = fb.get("times") or [fb.get("time", "19:30")]
     ts = facebook.next_slot(times, _scheduled(s)) if fb.get("mode") == "scheduled" else None
     caption = (out / "caption.txt").read_text(encoding="utf-8")
+    tl = json.loads((out / "timeline.json").read_text(encoding="utf-8")) if (out / "timeline.json").exists() else {}
+    if tl.get("compilation") or tl.get("total", 0) > 90:
+        # video dài (tổng hợp tuần) -> đăng video thường để đủ điều kiện quảng cáo in-stream
+        vid = facebook.post_video(out / "video.mp4", caption.split("\n")[0][:100], caption, cfg, ts)
+        return {"video_id": vid, "publish_ts": ts, "kind": "video"}
     vid = facebook.post_reel(out / "video.mp4", caption, cfg, ts)
     rec = {"video_id": vid, "publish_ts": ts}
     # Bình luận đầu tiên: câu hỏi gợi người xem kể kỷ niệm (tăng bình luận -> tăng phân phối)
@@ -217,6 +230,10 @@ def main() -> int:
     ch.add_argument("keys", nargs="*", help="Chỉ vẽ lại các nhân vật này, ví dụ: BIN BA")
     w = sub.add_parser("write", help="Nhờ AI viết kịch bản cho một chủ đề (lưu vào data/scripts)")
     w.add_argument("topic")
+    w.add_argument("--two-part", action="store_true", help="Viết truyện 2 phần (phần 1 kết lửng)")
+    w.add_argument("--memory", help="Kỷ niệm khán giả kể (viết thành tập)")
+    w.add_argument("--name", help="Tên người kể (ghi 'Theo lời kể của bạn ...')")
+    w.add_argument("--source", help="id bình luận gốc")
     sp = sub.add_parser("sample", help="Tạo file nghe thử một giọng")
     sp.add_argument("provider", choices=["vieneu", "mai", "edge"])
     sp.add_argument("voice")
@@ -229,13 +246,45 @@ def main() -> int:
     sub.add_parser("sync", help="Lấy số liệu + bình luận Facebook, AI soạn trả lời")
     sub.add_parser("outro", help="Tạo (lại) ảnh cảnh kết: Bin vẫy tay")
     sub.add_parser("gpu-test", help="Kiểm tra card NVIDIA: tạo thử 1 ảnh + 1 clip trên máy")
+    cp = sub.add_parser("compile", help="Ghép video tổng hợp các tập trong N ngày qua (3-5 phút)")
+    cp.add_argument("--days", type=int, default=7)
+    cp.add_argument("--post", action="store_true", help="Đăng lên Facebook luôn")
+    sub.add_parser("weekly", help="Việc hằng tuần: đúng ngày đã đặt thì ghép + đăng video tổng hợp")
     wb = sub.add_parser("web", help="Mở trang quản lý trên trình duyệt")
     wb.add_argument("--no-browser", action="store_true")
     args = p.parse_args()
     cfg = load_config()
     return {"run": cmd_run, "make": cmd_make, "post": cmd_post, "check": cmd_check, "status": cmd_status,
             "characters": cmd_characters, "write": cmd_write, "sample": cmd_sample, "web": cmd_web,
-            "audio-ai": cmd_audio_ai, "sync": cmd_sync, "outro": cmd_outro, "gpu-test": cmd_gpu_test}[args.cmd](args, cfg)
+            "audio-ai": cmd_audio_ai, "sync": cmd_sync, "outro": cmd_outro, "gpu-test": cmd_gpu_test,
+            "compile": cmd_compile, "weekly": cmd_weekly}[args.cmd](args, cfg)
+
+
+def cmd_compile(args, cfg) -> int:
+    from . import compile as comp
+
+    out = comp.build(cfg, args.days)
+    if not out:
+        return 1
+    if args.post:
+        s = st.load()
+        res = publish(out, cfg, s)
+        s["videos"].append({"id": out.name, "title": out.name, "folder": str(out), "source": "compilation",
+                            "created": dt.datetime.now().isoformat(timespec="seconds"), "facebook": res})
+        st.save(s)
+    return 0
+
+
+def cmd_weekly(args, cfg) -> int:
+    g = cfg.get("growth", {})
+    if not g.get("weekly_compilation", True):
+        return 0
+    if dt.date.today().weekday() != int(g.get("compilation_weekday", 6)):  # 6 = Chủ nhật
+        return 0
+    if (OUTPUT / f"tonghop_{dt.date.today():%Y-%m-%d}").exists():
+        return 0
+    args.days, args.post = 7, bool(cfg["publish"]["facebook"].get("enabled"))
+    return cmd_compile(args, cfg)
 
 
 def cmd_gpu_test(args, cfg) -> int:
@@ -303,8 +352,14 @@ def cmd_audio_ai(args, cfg) -> int:
 
 
 def cmd_write(args, cfg) -> int:
-    d = script_gen.write_for_topic(args.topic, cfg)
-    print(f"Đã lưu kịch bản '{d['title']}' (id: {d['id']})")
+    items = script_gen.write_for_topic(args.topic, cfg, "two_part" if args.two_part else "single",
+                                       args.memory, args.name, args.source)
+    for d in items:
+        print(f"Đã lưu kịch bản '{d['title']}' (id: {d['id']})")
+    if args.source:
+        from . import growth
+
+        growth.set_comment(args.source, status="used_for_episode", episode=items[0]["id"])
     return 0
 
 

@@ -121,14 +121,27 @@ async function loadGrowth() {
         <div class="muted">Đúng mùa thì ưu tiên tập hợp mùa</div></div>
       <div><b>Trả lời bình luận</b><span>${g.auto_reply ? "Tự động gửi" : "AI soạn, bạn duyệt"}</span>
         <label class="check"><input type="checkbox" id="g-auto" ${g.auto_reply ? "checked" : ""}> Tự gửi không cần duyệt</label></div>
+      <div><b>Tổng hợp tuần (3-5 phút)</b><span>${g.weekly.enabled ? "Tự ghép + đăng " + ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"][g.weekly.weekday] : "Tắt"}</span>
+        <div class="row"><label class="check"><input type="checkbox" id="g-weekly" ${g.weekly.enabled ? "checked" : ""}> Bật</label>
+        <select id="g-wday">${["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"].map((n, i) => `<option value="${i}" ${i === g.weekly.weekday ? "selected" : ""}>${n}</option>`).join("")}</select></div></div>
+      <div><b>Bản TikTok & vòng lặp</b><span>Không nhạc + câu móc B</span>
+        <div class="muted">Thêm nhạc thịnh hành trong app TikTok. Cuối video tự nối vòng về đầu.</div></div>
     </div>
     <div class="row" style="margin-top:10px"><button onclick="saveGrowth()">💾 Lưu chiến lược</button>
       <span class="muted">Khung giờ cách nhau bằng dấu phẩy, vd: 11:30, 19:30</span></div>`;
+  $("#lunarToday").textContent = g.lunar_today ? `Hôm nay: ${g.lunar_today}` : "";
+  $("#upcoming").innerHTML = g.upcoming.map((e) => `<div class="upi ${e.active ? "act" : ""}">
+      <b>${esc(e.name)}</b><span>${e.days_left === 0 ? "HÔM NAY" : `còn ${e.days_left} ngày`} · ${esc(e.date.split("-").reverse().join("/"))}</span>
+      <div class="row">${(e.topics || []).slice(0, 2).map((t) => `<button title="AI viết tập cho dịp này" onclick="aiWrite('${esc(t).replace(/'/g, "")}')">✨ ${esc(t)}</button>`).join("")}</div></div>`).join("")
+    || `<div class="muted">Không có dịp đặc biệt trong 60 ngày tới.</div>`;
+  $("#memList").innerHTML = g.memories.map((c, i) => `<div class="cm"><div class="cmq"><b>${esc(c.from)}</b> <span class="muted">· ${esc(c.title || "")}</span><div>${esc(c.message)}</div></div>
+      <div class="row"><button class="primary" onclick="memWrite(${i})">✨ Viết thành tập</button><button onclick="skipMem(${i})">Bỏ qua</button></div></div>`).join("")
+    || `<div class="muted">${g.fb_enabled ? "Chưa có bình luận kể kỷ niệm dài. Bấm “Đồng bộ” để cập nhật." : "Khi bật Facebook, các bình luận kể kỷ niệm sẽ hiện ở đây. Giờ có thể dán tay ở ô trên."}</div>`;
   $("#tkInfo").textContent = `${g.tiktok_queue.length} video chờ · đã đăng ${g.tiktok_posted.length}`;
   $("#tkQueue").innerHTML = g.tiktok_queue.map((q, i) => `<div class="tkitem">
       <div class="tkthumb" style="background-image:url('${q.cover || ""}')"></div>
       <div class="tkbody"><b>${esc(q.title)}</b>
-        <div class="muted">Gợi ý đăng: <b>${esc(q.suggest || "")}</b></div>
+        <div class="muted">Gợi ý đăng: <b>${esc(q.suggest || "")}</b>${q.tiktok_version ? ` · bản TikTok (không nhạc${q.hook_tiktok ? `, câu móc: “${esc(q.hook_tiktok)}”` : ""}) → <b>thêm nhạc thịnh hành trong app, âm lượng nhạc 10-20%</b>` : ""}</div>
         <div class="row">
           <button onclick="copyTk(${i})">📋 Copy nội dung</button>
           <a class="btn" href="${q.video}" download="${esc(q.folder)}.mp4">⬇ Tải video</a>
@@ -156,7 +169,7 @@ function saveGrowth() {
   const split = (s) => s.split(",").map((x) => x.trim()).filter(Boolean);
   act(() => api("/api/growth/settings", { method: "PUT", body: {
     videos_per_run: +$("#g-count").value, fb_times: split($("#g-fb").value), tiktok_times: split($("#g-tk").value),
-    auto_reply: $("#g-auto").checked } }), "Đã lưu chiến lược").then(loadGrowth);
+    auto_reply: $("#g-auto").checked, weekly_compilation: $("#g-weekly").checked, compilation_weekday: +$("#g-wday").value } }), "Đã lưu chiến lược").then(loadGrowth);
 }
 function growthSync() { act(async () => watchJob(await api("/api/growth/sync", { method: "POST" }), loadGrowth)); }
 function copyTk(i) { navigator.clipboard.writeText(growthData.tiktok_queue[i].caption); toast("Đã copy nội dung", "ok"); }
@@ -194,12 +207,13 @@ async function loadVideos() {
     return `<div class="vcard">
       <div class="thumb" style="background-image:url('${v.cover || ""}')" onclick="openVideo(${i})"></div>
       <div class="body">
-        <div class="title">${esc(v.title)}</div>
+        <div class="title">${v.compilation ? '<span class="tag new">📚 Tổng hợp</span> ' : ""}${esc(v.title)}</div>
         <div class="meta">${esc(v.created)} · ${esc(v.cost || "")}</div>
         <div>${fb}</div>
         <div class="acts">
           <button onclick="openVideo(${i})">▶ Xem</button>
-          <a class="btn" href="${v.video}" download="${esc(v.folder)}.mp4">⬇ Tải</a>
+          <a class="btn" href="${v.video}" download="${esc(v.folder)}.mp4" title="Bản Facebook (có nhạc)">⬇ FB</a>
+          ${v.video_tiktok ? `<a class="btn" href="${v.video_tiktok}" download="${esc(v.folder)}_tiktok.mp4" title="Bản TikTok (không nhạc, câu móc B)">⬇ TikTok</a>` : ""}
           <button onclick="postVideo(${i})">📘 Đăng</button>
           <button class="danger" onclick="archiveVideo(${i})" title="Chuyển vào thư mục lưu trữ">🗄</button>
         </div>
@@ -271,7 +285,11 @@ function renderEditor() {
     <div class="form">
       <div class="field"><label>Tiêu đề</label><input value="${esc(d.title)}" oninput="currentScript.title=this.value"></div>
       <div class="field"><label>Âm thanh nền</label><select onchange="currentScript.ambience=this.value">${Object.entries(AMB).map(([k, v]) => `<option value="${k}" ${d.ambience === k ? "selected" : ""}>${v}</option>`).join("")}</select></div>
-      <div class="field full"><label>Câu móc (chữ to 3 giây đầu)</label><input value="${esc(d.hook)}" oninput="currentScript.hook=this.value"></div>
+      ${d.part ? `<div class="field full"><span class="tag new">Phần ${d.part}/${d.parts_total}</span> ${d.next ? `→ tiếp theo: <a onclick="openScript('${esc(d.next)}')">${esc(d.next)}</a>` : ""}${d.after ? `← sau: <a onclick="openScript('${esc(d.after)}')">${esc(d.after)}</a>` : ""}</div>` : ""}
+      ${d.credit ? `<div class="field full"><span class="tag ok">💛 Theo lời kể của bạn ${esc(d.credit)}</span></div>` : ""}
+      <div class="field"><label>Câu móc A - Facebook (chữ to 3 giây đầu)</label><input value="${esc(d.hook)}" oninput="currentScript.hook=this.value"></div>
+      <div class="field"><label>Câu móc B - TikTok (thử kiểu khác)</label><input value="${esc(d.hook_b || "")}" oninput="currentScript.hook_b=this.value" placeholder="để trống = dùng câu A"></div>
+      <div class="field full"><label>Lời mời cuối video (để trống = mặc định)</label><input value="${esc((d.outro_text || "").replace(/\\N/g, " / "))}" oninput="currentScript.outro_text=this.value.replace(/\\s*\\/\\s*/g,'\\\\N')" placeholder="vd: Theo dõi HẠT GẠO QUÊ / để xem PHẦN 2 nhé!"></div>
       <div class="field full"><label>Nội dung đăng kèm</label><textarea rows="2" oninput="currentScript.caption=this.value">${esc(d.caption)}</textarea></div>
       <div class="field full"><label>Hashtag (cách nhau bằng dấu cách)</label><input value="${esc((d.hashtags || []).join(" "))}" oninput="currentScript.hashtags=this.value.split(/\\s+/).filter(Boolean)"></div>
     </div></div>
@@ -304,10 +322,26 @@ async function newScript() {
   const d = await act(() => api("/api/scripts", { method: "POST", body: { title } }), "Đã tạo tập mới");
   if (d) { await loadScripts(); openScript(d.id); }
 }
-function aiWrite(topic) {
+function aiWrite(topic, extra = {}) {
   topic = topic || $("#aiTopic").value.trim();
-  if (!topic) return toast("Nhập chủ đề trước", "err");
-  act(async () => watchJob(await api("/api/scripts/write", { method: "POST", body: { topic } }), async () => { await loadScripts(); if (scriptsCache[0]) openScript(scriptsCache[0].id); }));
+  if (!topic && !extra.memory) return toast("Nhập chủ đề trước", "err");
+  const two_part = extra.two_part ?? $("#aiTwoPart")?.checked;
+  act(async () => watchJob(await api("/api/scripts/write", { method: "POST", body: { topic, two_part, ...extra } }), async () => {
+    await loadScripts(); if (currentTab === "scripts" && scriptsCache[0]) openScript(scriptsCache[0].id); if (currentTab === "growth") loadGrowth();
+  }));
+}
+function memWrite(i) {
+  const c = i !== undefined ? growthData.memories[i] : null;
+  const memory = c ? c.message : $("#memText").value.trim();
+  const name = c ? c.from : ($("#memName").value.trim() || "giấu tên");
+  if (!memory) return toast("Dán kỷ niệm trước", "err");
+  aiWrite("", { memory, name, source: c?.id, two_part: $("#memTwo").checked });
+  if (!c) { $("#memText").value = ""; $("#memName").value = ""; }
+}
+function skipMem(i) { act(() => api(`/api/memories/${encodeURIComponent(growthData.memories[i].id)}/skip`, { method: "POST" })).then(loadGrowth); }
+function compileWeek() {
+  if (!confirm("Ghép các tập trong 7 ngày qua thành 1 video tổng hợp (3-5 phút)?")) return;
+  act(async () => watchJob(await api("/api/compile", { method: "POST" }), loadVideos));
 }
 
 // ---------- CHỦ ĐỀ ----------

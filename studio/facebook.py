@@ -129,9 +129,43 @@ def post_reel(video: Path, description: str, cfg: dict, publish_ts: int | None) 
         data.update(video_state="PUBLISHED")
     _check(requests.post(base, data=data, timeout=120), "finish")
 
+    # Ảnh bìa có chữ to (không bắt buộc - lỗi thì bỏ qua)
+    cover = video.parent / "cover.jpg"
+    if cover.exists():
+        try:
+            with open(cover, "rb") as f:
+                requests.post(f"https://graph.facebook.com/{ver}/{video_id}/thumbnails",
+                              data={"is_preferred": "true", "access_token": token},
+                              files={"source": ("cover.jpg", f, "image/jpeg")}, timeout=120)
+        except requests.RequestException:
+            pass
+
     when = dt.datetime.fromtimestamp(publish_ts).strftime("%d/%m %H:%M") if publish_ts else "ngay bây giờ"
     log(f"Facebook: đã tải lên Reel {video_id}, đăng lúc {when}")
     return video_id
+
+
+def post_video(video: Path, title: str, description: str, cfg: dict, publish_ts: int | None) -> str:
+    """Đăng video THƯỜNG (không phải Reel) - dùng cho video tổng hợp dài 3-5 phút (đủ điều kiện quảng cáo)."""
+    page_id, token = _creds()
+    ver = cfg["publish"]["facebook"].get("graph_version", "v23.0")
+    data = {"title": title, "description": description, "access_token": token}
+    if publish_ts:
+        data.update(published="false", scheduled_publish_time=str(publish_ts))
+    files = {"source": (video.name, open(video, "rb"), "video/mp4")}
+    cover = video.parent / "cover.jpg"
+    if cover.exists():
+        files["thumb"] = ("cover.jpg", open(cover, "rb"), "image/jpeg")
+    try:
+        r = requests.post(f"https://graph-video.facebook.com/{ver}/{page_id}/videos", data=data, files=files,
+                          timeout=1800)
+    finally:
+        for f in files.values():
+            f[1].close()
+    vid = _check(r, "đăng video").get("id", "")
+    when = dt.datetime.fromtimestamp(publish_ts).strftime("%d/%m %H:%M") if publish_ts else "ngay bây giờ"
+    log(f"Facebook: đã tải lên video {vid}, đăng lúc {when}")
+    return vid
 
 
 def check_token(cfg: dict) -> str:

@@ -48,6 +48,21 @@
     <div class="head"><h1>🚀 Tăng trưởng</h1><button class="primary" onclick="growthSync()">↻ Đồng bộ số liệu & bình luận</button></div>
     <div class="panel strategy" id="growthPlan"></div>
     <div class="panel">
+      <div class="head"><h2>📅 Ngày đặc biệt sắp tới</h2><span class="muted" id="lunarToday"></span></div>
+      <p class="muted">Tool tự ưu tiên tập hợp dịp trong khoảng "đăng trước" (tô cam). Muốn có tập riêng cho một dịp, bấm ✨ để AI viết ngay.</p>
+      <div id="upcoming" class="upc"></div>
+    </div>
+    <div class="panel">
+      <h2>💛 Kỷ niệm khán giả → tập mới</h2>
+      <p class="muted">Biến kỷ niệm người xem kể thành tập phim, ghi "Theo lời kể của bạn ...". Người được nhắc tên sẽ chia sẻ, cộng đồng thấy mình được lắng nghe.</p>
+      <div class="memform">
+        <input id="memName" placeholder="Tên người kể (vd: Lan Anh)">
+        <textarea id="memText" rows="2" placeholder="Dán kỷ niệm khán giả kể (từ bình luận Facebook/TikTok, tin nhắn...)"></textarea>
+        <div class="row"><label class="check"><input type="checkbox" id="memTwo"> 2 phần</label><button class="primary" onclick="memWrite()">✨ Viết thành tập</button></div>
+      </div>
+      <div id="memList"></div>
+    </div>
+    <div class="panel">
       <div class="head"><h2>📱 Hàng chờ TikTok</h2><span class="muted" id="tkInfo"></span></div>
       <p class="muted">TikTok chưa cho tool tự đăng: mỗi video bấm <b>Copy</b> → <b>Mở TikTok Studio</b> → kéo video vào → dán nội dung → <b>hẹn giờ</b> theo gợi ý → bấm <b>Đã đăng</b>. Khoảng 1 phút/video, hẹn trước được cả tuần.</p>
       <div id="tkQueue" class="tkq"></div>
@@ -66,7 +81,9 @@
 
   <!-- VIDEO -->
   <section id="tab-videos" class="tab">
-    <div class="head"><h1>Video đã tạo</h1><button onclick="loadVideos()">↻ Tải lại</button></div>
+    <div class="head"><h1>Video đã tạo</h1>
+      <div class="row"><button onclick="compileWeek()" title="Ghép các tập 7 ngày qua thành video 3-5 phút (đủ điều kiện quảng cáo Facebook)">📚 Ghép tổng hợp tuần</button>
+      <button onclick="loadVideos()">↻ Tải lại</button></div></div>
     <div id="videoGrid" class="grid"></div>
   </section>
 
@@ -75,6 +92,7 @@
     <div class="head"><h1>Kịch bản</h1>
       <div class="row">
         <input id="aiTopic" placeholder="Chủ đề, vd: Bắn bi ở sân đình" style="width:260px">
+        <label class="check" title="Truyện 2 phần: phần 1 kết lửng, người xem theo dõi để chờ phần 2"><input type="checkbox" id="aiTwoPart"> 2 phần</label>
         <button onclick="aiWrite()">✨ AI viết</button>
         <button class="primary" onclick="newScript()">＋ Tập mới</button>
       </div>

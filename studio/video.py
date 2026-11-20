@@ -63,13 +63,16 @@ def _weights(words: list[str]) -> list[float]:
     return ws
 
 
-def build_ass(script: dict, speech: list[tuple[float, float]], total: float, out: Path, cfg: dict) -> None:
+def build_ass(script: dict, speech: list[tuple[float, float]], total: float, out: Path, cfg: dict,
+              hook: str | None = None) -> None:
     vcfg = cfg["video"]
     font = vcfg.get("font_name", "Arial")
     max_words = int(vcfg.get("caption_words", 4))
     header = vcfg.get("series_name", "KÝ ỨC 8X 9X")
     if script.get("_episode"):
         header = f"{header}  •  TẬP {script['_episode']}"
+    if script.get("part") and script.get("parts_total"):
+        header = f"{header}  •  PHẦN {script['part']}/{script['parts_total']}"
 
     lines = [
         "[Script Info]", "ScriptType: v4.00+", f"PlayResX: {W}", f"PlayResY: {H}",
@@ -87,7 +90,7 @@ def build_ass(script: dict, speech: list[tuple[float, float]], total: float, out
     if header:
         lines.append(f"Dialogue: 0,{_t(0)},{_t(total)},Head,,0,0,0,,{{\\alpha&H30&}}{_clean(header)}")
 
-    hook = _clean(script.get("hook") or script["title"]).upper()
+    hook = _clean(hook or script.get("hook") or script["title"]).upper()
     hook_end = min(3.0, total)
     lines.append(
         f"Dialogue: 2,{_t(0)},{_t(hook_end)},Hook,,0,0,0,,"
@@ -249,6 +252,8 @@ def assemble(script: dict, wavs: list[Path], images: list[list[Path]], out_dir: 
 
     # Hình
     shots = _plan_shots(images, scene_frames, fps, clips)
+    if vcfg.get("loop", True) and shots and shots[0][2] != "video":
+        shots[0] = (shots[0][0], shots[0][1], "in")  # khung đầu = toàn ảnh, để cảnh cuối nối vòng về đúng khung này
     clips = []
     for i, (img, n, kind) in enumerate(shots):
         clip = work / f"shot_{i:02d}.mp4"
@@ -276,51 +281,84 @@ def assemble(script: dict, wavs: list[Path], images: list[list[Path]], out_dir: 
             n_ok += 1
     if n_ok:
         log(f"  phụ đề khớp Whisper: {n_ok}/{len(wavs)} câu")
-    build_ass(script, speech, total, work / "captions.ass", cfg)
 
     # Âm thanh
     _write_narration(wavs, lead, scene_frames, fps, work / "narration.wav")
     music = _pick(ASSETS / "music")
     amb = _pick(ASSETS / "sfx", script.get("ambience")) if script.get("ambience") else None
-
-    inputs = ["-i", "video_silent.mp4", "-i", "narration.wav"]
-    fmt = "aformat=sample_rates=44100:channel_layouts=stereo"
-    parts = [f"[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,{fmt}" + (",asplit=2[voice][sc]" if music else "[voice]")]
-    mix = ["[voice]"]
-    idx = 2
     if music:
-        inputs += ["-stream_loop", "-1", "-i", str(music)]
-        mv = float(vcfg.get("music_volume", 0.22))
-        parts.append(
-            f"[{idx}:a]{fmt},volume={mv},afade=t=in:d=1,afade=t=out:st={max(0, total - 2):.2f}:d=2[mraw];"
-            f"[mraw][sc]sidechaincompress=threshold=0.015:ratio=7:attack=20:release=450[music]"
-        )
-        mix.append("[music]")
-        idx += 1
         log(f"  nhạc nền: {music.name}")
     else:
         log("  (chưa có nhạc nền - bỏ mp3 vào assets/music)")
     if amb:
-        inputs += ["-stream_loop", "-1", "-i", str(amb)]
-        av = float(vcfg.get("ambience_volume", 0.35))
-        parts.append(
-            f"[{idx}:a]{fmt},volume={av},afade=t=in:d=0.4,afade=t=out:st={max(0, total - 1.5):.2f}:d=1.5[amb]"
-        )
-        mix.append("[amb]")
         log(f"  âm thanh không khí: {amb.name}")
     elif script.get("ambience"):
         log(f"  (chưa có âm thanh '{script['ambience']}' - bỏ file vào assets/sfx)")
-    if len(mix) > 1:
-        parts.append(f"{''.join(mix)}amix=inputs={len(mix)}:duration=first:dropout_transition=0:normalize=0,"
-                     f"alimiter=limit=0.95[a]")
-    else:
-        parts.append("[voice]alimiter=limit=0.95[a]")
 
-    fc = "[0:v]ass=captions.ass:fontsdir=fonts[v];" + ";".join(parts)
+    # Kết vòng lặp: 0,45s cuối mờ dần về khung hình đầu -> xem lại liền mạch, người xem hay xem lần 2
+    loop = float(vcfg.get("loop_sec", 0.45)) if vcfg.get("loop", True) else 0.0
+    if loop:
+        run([ff, "-y", "-i", "shot_00.mp4", "-frames:v", "1", "first_frame.png"], cwd=work)
+
+    def render_video(hook: str | None, ass_name: str, out_name: str) -> None:
+        build_ass(script, speech, total, work / ass_name, cfg, hook=hook)
+        cmd = [ff, "-y", "-i", "video_silent.mp4"]
+        fc = f"[0:v]ass={ass_name}:fontsdir=fonts"
+        if loop:
+            cmd += ["-loop", "1", "-t", f"{total:.3f}", "-i", "first_frame.png"]
+            st = max(0.0, total - loop)
+            fc += (f"[c];[1:v]format=rgba,fade=t=in:st={st:.3f}:d={loop:.3f}:alpha=1[f];"
+                   f"[c][f]overlay=0:0:enable='gte(t,{st:.3f})'")
+        fc += ",format=yuv420p[v]"
+        run([*cmd, "-filter_complex", fc, "-map", "[v]", "-c:v", "libx264", "-preset", "medium", "-crf", "19",
+             "-t", f"{total:.3f}", out_name], cwd=work)
+
+    def mux(video_name: str, with_music: bool, final: Path) -> None:
+        use_music = music if with_music else None
+        inputs = ["-i", video_name, "-i", "narration.wav"]
+        fmt = "aformat=sample_rates=44100:channel_layouts=stereo"
+        parts = [f"[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,{fmt}" + (",asplit=2[voice][sc]" if use_music else "[voice]")]
+        mix, idx = ["[voice]"], 2
+        if use_music:
+            inputs += ["-stream_loop", "-1", "-i", str(use_music)]
+            mv = float(vcfg.get("music_volume", 0.22))
+            parts.append(f"[{idx}:a]{fmt},volume={mv},afade=t=in:d=1,afade=t=out:st={max(0, total - 2):.2f}:d=2[mraw];"
+                         f"[mraw][sc]sidechaincompress=threshold=0.015:ratio=7:attack=20:release=450[music]")
+            mix.append("[music]")
+            idx += 1
+        if amb:
+            inputs += ["-stream_loop", "-1", "-i", str(amb)]
+            av = float(vcfg.get("ambience_volume", 0.35))
+            parts.append(f"[{idx}:a]{fmt},volume={av},afade=t=in:d=0.4,"
+                         f"afade=t=out:st={max(0, total - 1.5):.2f}:d=1.5[amb]")
+            mix.append("[amb]")
+        tail = f"afade=t=out:st={max(0, total - 0.3):.3f}:d=0.3,alimiter=limit=0.95[a]"
+        if len(mix) > 1:
+            parts.append(f"{''.join(mix)}amix=inputs={len(mix)}:duration=first:dropout_transition=0:normalize=0,{tail}")
+        else:
+            parts.append(f"[voice]{tail}")
+        run([ff, "-y", *inputs, "-filter_complex", ";".join(parts), "-map", "0:v", "-map", "[a]", "-c:v", "copy",
+             "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-t", f"{total:.3f}", "-movflags", "+faststart",
+             final], cwd=work)
+
+    # Bản Facebook: câu móc A + nhạc nền. Bản TikTok: câu móc B (nếu có) + KHÔNG nhạc nền
+    # (để thêm nhạc đang thịnh hành ngay trong app TikTok -> được đẩy mạnh hơn).
+    render_video(script.get("hook"), "captions_a.ass", "captioned_a.mp4")
     final = out_dir / "video.mp4"
-    run([ff, "-y", *inputs, "-filter_complex", fc, "-map", "[v]", "-map", "[a]",
-         "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p",
-         "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-t", f"{total:.3f}", "-movflags", "+faststart",
-         final], cwd=work)
-    log(f"Video: xong {final} ({total:.1f} giây, {len(clips)} shot)")
+    mux("captioned_a.mp4", True, final)
+    hook_b = (script.get("hook_b") or "").strip()
+    if hook_b and hook_b != script.get("hook"):
+        render_video(hook_b, "captions_b.ass", "captioned_b.mp4")
+        mux("captioned_b.mp4", False, out_dir / "video_tiktok.mp4")
+    else:
+        mux("captioned_a.mp4", False, out_dir / "video_tiktok.mp4")
+
+    # Mốc thời gian (để ghép video tổng hợp tuần: bỏ cảnh kết của từng tập)
+    outro_start = sum(fr for fr, sc in zip(scene_frames, script["scenes"]) if not sc.get("_outro")) / fps
+    import json as _json
+
+    (out_dir / "timeline.json").write_text(_json.dumps(
+        {"total": round(total, 3), "main_end": round(outro_start, 3), "hook_fb": script.get("hook"),
+         "hook_tiktok": hook_b or script.get("hook")}, ensure_ascii=False), encoding="utf-8")
+    log(f"Video: xong {final} ({total:.1f} giây, {len(clips)} shot) + bản TikTok")
     return final

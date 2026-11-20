@@ -1,22 +1,14 @@
 {
-  "_ghi_chu": "Mùa nội dung: trong khoảng ngày (tháng-ngày) này, tool ưu tiên các kịch bản/chủ đề tương ứng. Ngày Tết/Trung thu âm lịch đổi mỗi năm, sửa lại cho đúng.",
+  "_ghi_chu": "Mùa nội dung dài ngày (tháng-ngày). Các ngày lễ (Tết, Trung thu, Vu Lan, 20/11, 1/6...) đã được tool tự tính theo âm/dương lịch trong studio/growth.py - không cần sửa mỗi năm.",
   "seasons": [
-    {"name": "Tết Nguyên Đán", "from": "01-05", "to": "02-25",
-     "scripts": ["dem-canh-banh-chung"],
-     "topics": ["Tiền lì xì mừng tuổi", "Quần áo mới ngày Tết", "Mâm ngũ quả ngày Tết", "Kẹo lạc, kẹo vừng", "Hội làng đầu xuân"]},
-    {"name": "Quốc tế thiếu nhi 1/6", "from": "05-25", "to": "06-02",
-     "scripts": [], "topics": ["Chơi đồ hàng", "Gấp máy bay giấy, thuyền giấy", "Tò he nặn bằng bột gạo"]},
     {"name": "Mùa hè", "from": "05-20", "to": "08-15",
      "scripts": ["kem-que-leng-keng", "mat-dien-mua-he", "tha-dieu-tren-de", "dong-nat-doi-keo-keo"],
      "topics": ["Tắm mưa đầu hạ", "Bơi ở ao làng", "Bắt cào cào, châu chấu", "Trốn ngủ trưa"]},
-    {"name": "Khai giảng", "from": "08-20", "to": "09-10",
-     "scripts": ["but-may-muc-tim"],
-     "topics": ["Bao vở bằng giấy báo", "Mua sách giáo khoa cũ của anh chị", "Khăn quàng đỏ", "Tiếng trống trường", "Bố chở đi học bằng xe đạp"]},
-    {"name": "Trung thu", "from": "08-25", "to": "10-05",
-     "scripts": ["trung-thu-den-ong-sao"], "topics": ["Tò he nặn bằng bột gạo", "Phá cỗ trông trăng"]},
-    {"name": "Ngày Nhà giáo 20/11", "from": "11-08", "to": "11-21",
-     "scripts": ["but-may-muc-tim"], "topics": ["Tặng hoa cô giáo ngày 20/11", "Lưu bút cuối năm", "Học bài dưới đèn dầu"]},
+    {"name": "Mùa thu", "from": "09-01", "to": "10-31",
+     "scripts": [], "topics": ["Hái hồng ngoài vườn", "Cốm làng Vòng gói lá sen"]},
     {"name": "Mùa đông", "from": "11-15", "to": "01-31",
-     "scripts": [], "topics": ["Áo len mẹ đan", "Ngủ màn chung cả nhà", "Bếp rơm và nồi cơm đất", "Bà kể chuyện cổ tích"]}
+     "scripts": [], "topics": ["Áo len mẹ đan", "Ngủ màn chung cả nhà", "Bếp rơm và nồi cơm đất", "Bà kể chuyện cổ tích"]},
+    {"name": "Mùa xuân", "from": "02-01", "to": "04-15",
+     "scripts": [], "topics": ["Hội làng đầu xuân", "Mưa phùn đi học lấm lem"]}
   ]
 }

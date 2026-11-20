@@ -258,6 +258,8 @@ def videos():
                 "folder": d.name, "title": meta.get("title", d.name), "id": meta.get("id"),
                 "created": dt.datetime.fromtimestamp((d / "video.mp4").stat().st_mtime).strftime("%d/%m %H:%M"),
                 "video": f"/media/{d.name}/video.mp4", "cover": f"/media/{d.name}/cover.jpg" if (d / "cover.jpg").exists() else None,
+                "video_tiktok": f"/media/{d.name}/video_tiktok.mp4" if (d / "video_tiktok.mp4").exists() else None,
+                "compilation": d.name.startswith("tonghop_"),
                 "caption": (d / "caption.txt").read_text(encoding="utf-8") if (d / "caption.txt").exists() else "",
                 "cost": (d / "cost.txt").read_text(encoding="utf-8").strip() if (d / "cost.txt").exists() else "",
                 "facebook": ({"scheduled": dt.datetime.fromtimestamp(fb["publish_ts"]).strftime("%d/%m %H:%M")}
@@ -359,10 +361,22 @@ def script_archive(sid: str):
 
 @app.post("/api/scripts/write")
 def script_write():
-    topic = ((request.get_json(force=True) or {}).get("topic") or "").strip()
+    body = request.get_json(force=True) or {}
+    topic = (body.get("topic") or "").strip()
+    memory = (body.get("memory") or "").strip()
+    if not topic and memory:
+        topic = memory[:60]
     if not topic:
         return jsonify({"error": "Nhập chủ đề"}), 400
-    return jsonify(JOBS.add(f"AI viết kịch bản: {topic}", ["write", topic]))
+    args = ["write", topic]
+    if body.get("two_part"):
+        args.append("--two-part")
+    if memory:
+        args += ["--memory", memory, "--name", (body.get("name") or "giấu tên").strip()[:60]]
+        if body.get("source"):
+            args += ["--source", str(body["source"])]
+    label = ("AI viết truyện 2 phần: " if body.get("two_part") else "AI viết kịch bản: ") + topic[:50]
+    return jsonify(JOBS.add(label, args))
 
 
 # ---------- chủ đề ----------
@@ -696,7 +710,16 @@ def growth_get():
     for q, slot in zip(queue, _tiktok_slots(len(queue), tk_times)):
         q["suggest"] = slot
     posted = [{"folder": k, **v} for k, v in tiktok.items() if v.get("posted")]
+    for q in queue:  # bản TikTok riêng (không nhạc, câu móc B)
+        if (OUTPUT / q["folder"] / "video_tiktok.mp4").exists():
+            q["video"] = f"/media/{q['folder']}/video_tiktok.mp4"
+            q["tiktok_version"] = True
+        tl = _read_json(OUTPUT / q["folder"] / "timeline.json", {})
+        q["hook_tiktok"] = tl.get("hook_tiktok")
     comments = growth.comments_all()
+    memories = [c for c in comments.values()
+                if len(c.get("message", "")) >= 40 and c.get("status") not in ("used_for_episode", "memory_skip")]
+    memories.sort(key=lambda c: len(c.get("message", "")), reverse=True)
     pending = [c for c in comments.values() if c.get("status") == "draft"]
     pending.sort(key=lambda c: c.get("created") or "", reverse=True)
     return jsonify({
@@ -706,7 +729,23 @@ def growth_get():
         "auto_reply": bool(cfg.get("growth", {}).get("auto_reply")),
         "leaderboard": growth.leaderboard()[:30], "tiktok_queue": queue, "tiktok_posted": posted,
         "comments": pending[:100], "comments_replied": sum(1 for c in comments.values() if c.get("status") == "replied"),
+        "memories": memories[:30], "upcoming": growth.upcoming(60), "lunar_today": growth.lunar_today(),
+        "weekly": {"enabled": cfg.get("growth", {}).get("weekly_compilation", True),
+                   "weekday": cfg.get("growth", {}).get("compilation_weekday", 6)},
     })
+
+
+@app.post("/api/compile")
+def compile_now():
+    return jsonify(JOBS.add("Ghép video tổng hợp 7 ngày", ["compile", "--days", "7"]))
+
+
+@app.post("/api/memories/<cid>/skip")
+def memory_skip(cid: str):
+    from . import growth
+
+    growth.set_comment(cid, status="memory_skip")
+    return jsonify({"ok": True})
 
 
 @app.put("/api/growth/settings")
@@ -726,6 +765,12 @@ def growth_settings():
         cfg["videos_per_run"] = max(1, min(10, int(body["videos_per_run"])))
     if "auto_reply" in body:
         cfg.setdefault("growth", {})["auto_reply"] = bool(body["auto_reply"])
+    if "weekly_compilation" in body:
+        cfg.setdefault("growth", {})["weekly_compilation"] = bool(body["weekly_compilation"])
+    if "compilation_weekday" in body:
+        cfg.setdefault("growth", {})["compilation_weekday"] = max(0, min(6, int(body["compilation_weekday"])))
+    if "loop" in body:
+        cfg.setdefault("video", {})["loop"] = bool(body["loop"])
     _write_json(ROOT / "config.json", cfg)
     return jsonify({"ok": True})
 

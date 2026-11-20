@@ -94,6 +94,20 @@ Máy cần bật và đã đăng nhập Windows. Nếu máy tắt đúng giờ, 
 | TikTok | Hàng chờ có giờ gợi ý, nút copy nội dung | Khoảng 1 phút/video trên TikTok Studio |
 | Học từ tập thắng | Xếp hạng FB + TikTok; AI viết tập mới theo kiểu 5 tập dẫn đầu | Nhập lượt xem TikTok vào bảng |
 
+**Tính năng giúp lên xu hướng (đã có sẵn):**
+
+| Tính năng | Tác dụng |
+|---|---|
+| **Bản TikTok riêng** (`video_tiktok.mp4`) | Không nhạc nền, để bạn thêm **nhạc đang thịnh hành** trong app TikTok (âm lượng 10–20%), nên được TikTok đẩy mạnh hơn |
+| **A/B câu móc** | Facebook dùng câu móc A, TikTok dùng câu móc B (kiểu khác). Bảng xếp hạng cho thấy kiểu nào hút hơn, AI học theo |
+| **Kết vòng lặp** | 0,45 giây cuối mờ dần về khung đầu, người xem vô tình xem lại lần 2 (tín hiệu mạnh nhất) |
+| **Truyện 2 phần** | Tick "2 phần" khi bấm AI viết. Phần 1 kết lửng, cảnh kết mời "xem PHẦN 2"; tool tự đăng phần 2 ngay sau phần 1 |
+| **Tập từ kỷ niệm khán giả** | Tab Tăng trưởng → dán kỷ niệm khán giả kể (hoặc bấm từ bình luận FB) → AI viết thành tập, caption "Theo lời kể của bạn ..." |
+| **Lịch âm & ngày đặc biệt** | Tự tính Tết, Rằm, Đoan Ngọ, Vu Lan, Trung thu, ông Táo, 1/6, khai giảng, 20/11, Ngày của Mẹ/Cha..., ưu tiên đăng trước vài ngày |
+| **Ảnh bìa chữ to** | Lưới video trên trang trông như một series, tự đặt làm ảnh bìa Reel |
+| **Nhân vật phụ** | Chó Vàng, bạn Tèo, cô giáo Hoa (mã `{VANG}`, `{TEO}`, `{CO}`) |
+| **Tổng hợp tuần 3–5 phút** | Chủ nhật tự ghép các tập trong tuần, đăng dạng video thường. Facebook chỉ chèn quảng cáo kiếm tiền vào video từ 3 phút trở lên. Tab Video có nút "📚 Ghép tổng hợp tuần" |
+
 **Không dùng:** mua view/follow, bot follow/like/comment dạo, tool đăng TikTok không chính thức. Những cách này làm kênh bị bóp tương tác, bị khóa hoặc mất quyền kiếm tiền.
 
 ## 6. Kết nối Facebook Page
@@ -127,6 +141,9 @@ Nhớ bật nhãn **"Nội dung do AI tạo"** khi đăng.
 | `write "<chủ đề>"` | AI viết kịch bản mới, lưu vào `data/scripts` |
 | `characters [BIN BA ONG]` | Vẽ lại ảnh mẫu nhân vật |
 | `outro` | Tạo ảnh cảnh kết |
+| `write "<chủ đề>" --two-part` | AI viết truyện 2 phần |
+| `write "<chủ đề>" --memory "<kỷ niệm>" --name "<tên>"` | AI viết tập từ kỷ niệm khán giả |
+| `compile [--days 7] [--post]` | Ghép video tổng hợp (3–5 phút) |
 | `sample <vieneu/mai/edge> "<giọng>" <file.wav>` | Tạo file nghe thử một giọng |
 | `audio-ai [--only music/sfx]` | AI tạo nhạc nền và âm thanh không khí |
 | `post <thư mục output>` | Đăng một video lên Facebook |
@@ -154,6 +171,8 @@ hatgaoque/
 │  ├─ align.py                   khớp phụ đề từng chữ bằng Whisper
 │  ├─ video.py                   dựng video, phụ đề, âm thanh
 │  ├─ outro.py                   cảnh kết mời theo dõi
+│  ├─ cover.py                   ảnh bìa chữ to
+│  ├─ compile.py                 video tổng hợp tuần
 │  ├─ growth.py                  lịch theo mùa, số liệu, bình luận, xếp hạng
 │  ├─ facebook.py                Graph API (đăng, bình luận, số liệu)
 │  ├─ audio_ai.py                AI tạo nhạc và âm thanh

@@ -1,0 +1,71 @@
+{
+  "title": "Trốn ngủ trưa đi bắt chuồn chuồn",
+  "hook": "Bin trốn ngủ trưa, biến mất đâu rồi?",
+  "hook_b": "Chỉ 9x mới từng làm thế!",
+  "ambience": "lang_que",
+  "scenes": [
+    {
+      "text": "Bin lén chui khỏi giường, rón rén ra sân sau bắt chuồn chuồn.",
+      "images": [
+        "{BIN} tiptoeing past a wooden bed inside a 1990s Vietnamese countryside house",
+        "{BIN} sneaking toward a sunny backyard with a small bamboo insect net"
+      ]
+    },
+    {
+      "text": "Cậu đuổi theo một con chuồn chuồn đỏ, vấp bờ cỏ, cười khúc khích.",
+      "images": [
+        "{BIN} chasing a red dragonfly across a grassy yard, laughing",
+        "{VANG} trotting nearby and barking playfully beside the vegetable patch"
+      ],
+      "motion": "Bin runs in circles and nearly tumbles, then giggles while reaching up."
+    },
+    {
+      "text": "Chuồn chuồn đậu lên chiếc quạt mo, Bin mừng quá giơ tay chộp hụt.",
+      "images": [
+        "{BIN} reaching for a dragonfly perched on a palm-leaf fan in the yard",
+        "{VANG} watching with tilted head beside a clay water jar"
+      ],
+      "motion": "Bin jumps and swats the air, then freezes in surprise."
+    },
+    {
+      "speaker": "ong",
+      "text": "“Trốn ngủ trưa à? Lại đây ông chỉ cách bắt nhẹ thôi.”",
+      "images": [
+        "{ONG} crouching by the veranda and speaking kindly to {BIN}",
+        "{BIN} listening with wide eyes near a low wooden stool"
+      ],
+      "motion": "Grandpa smiles and gestures for Bin to come closer."
+    },
+    {
+      "text": "Ông đưa Bin cái vợt tre, cho cậu bắt được ngay một con xinh nhất.",
+      "images": [
+        "{ONG} handing a bamboo dragonfly net to {BIN} in a bright courtyard",
+        "{BIN} carefully catching a dragonfly while {VANG} looks on proudly"
+      ],
+      "motion": "Bin carefully lifts the net and cheers softly when it works."
+    },
+    {
+      "text": "Bin ôm ông cười tít mắt, nhưng ngoài sân còn một con đang bay vòng... chuyện gì nữa đây? Xem phần 2 nhé!",
+      "images": [
+        "{BIN} hugging {ONG} at the doorstep under warm afternoon light",
+        "{BIN} and {ONG} looking up at one dragonfly circling above the yard"
+      ]
+    }
+  ],
+  "caption": "Trốn ngủ trưa đi bắt chuồn chuồn, ai hồi bé cũng từng ham vậy một lần 😄 Xem phần 2 nhé!",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoainiem",
+    "#haivui"
+  ],
+  "topic": "Trốn ngủ trưa đi bắt chuồn chuồn",
+  "id": "tron-ngu-trua-di-bat-chuon-chuon-p1",
+  "part": 1,
+  "parts_total": 2,
+  "next": "tron-ngu-trua-di-bat-chuon-chuon-p2",
+  "outro_text": "Theo dõi HẠT GẠO QUÊ\\Nđể xem PHẦN 2 nhé!",
+  "outro_voice": "Theo dõi Hạt Gạo Quê để xem phần 2 nha!"
+}

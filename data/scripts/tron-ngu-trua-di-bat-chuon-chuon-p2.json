@@ -1,0 +1,69 @@
+{
+  "title": "Phần 2: Chuồn chuồn bay mất rồi!",
+  "hook": "Phần 2: Bin suýt bắt được nữa rồi!",
+  "hook_b": "Tiếng quạt mo, tuổi thơ đây rồi!",
+  "ambience": "lang_que",
+  "scenes": [
+    {
+      "text": "Phần 1 Bin được ông dạy bắt nhẹ, rồi lại đuổi theo con bay vòng sân.",
+      "images": [
+        "{BIN} running after a dragonfly in the same sunny courtyard",
+        "{ONG} watching from the veranda with a patient smile"
+      ]
+    },
+    {
+      "text": "Bin mải nhìn trời, đạp trúng nón lá, ngã phịch xuống cỏ mềm.",
+      "images": [
+        "{BIN} stumbling onto the grass after stepping on a conical hat",
+        "{VANG} rushing over with a worried but cute expression"
+      ],
+      "motion": "Bin flails arms, then lands safely in a funny heap."
+    },
+    {
+      "text": "Chuồn chuồn đậu ngay lên vai ông, Bin ôm bụng cười bò.",
+      "images": [
+        "{ONG} standing still while a dragonfly rests near his shoulder in the yard",
+        "{BIN} laughing hard beside {ONG} near a bamboo bench"
+      ],
+      "motion": "Grandpa holds still while Bin laughs and points excitedly."
+    },
+    {
+      "speaker": "ong",
+      "text": "“Thôi, vào nhà uống ngụm nước chè, ngủ trưa dậy bắt tiếp.”",
+      "images": [
+        "{ONG} offering a small cup of tea on a low table to {BIN}",
+        "{BIN} sitting beside {ONG} in a shaded porch with a calm smile"
+      ]
+    },
+    {
+      "text": "Bin ngoan ngoãn ôm ông, hứa dậy là rủ Vàng đi bắt tiếp.",
+      "images": [
+        "{BIN} hugging {ONG} tightly on the wooden porch",
+        "{VANG} wagging its tail beside them near an old bicycle"
+      ],
+      "motion": "Bin leans into grandpa’s lap, then nods eagerly."
+    },
+    {
+      "text": "Hồi nhỏ bạn có từng trốn ngủ trưa đi chơi không?",
+      "images": [
+        "{BIN} and {ONG} smiling together under warm afternoon sun in the countryside",
+        "{VANG} sitting happily near the doorway with dragonflies in the air"
+      ]
+    }
+  ],
+  "caption": "Có ai từng trốn ngủ trưa rồi bị ông bắt gặp như Bin không? 😆 Kể mình nghe với!",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#chuonchuon",
+    "#langque",
+    "#hoainiem"
+  ],
+  "topic": "Trốn ngủ trưa đi bắt chuồn chuồn",
+  "id": "tron-ngu-trua-di-bat-chuon-chuon-p2",
+  "part": 2,
+  "parts_total": 2,
+  "after": "tron-ngu-trua-di-bat-chuon-chuon-p1"
+}

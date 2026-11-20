@@ -46,12 +46,87 @@ def active_seasons(today: dt.date | None = None) -> list[dict]:
     return out
 
 
+# Ngày đặc biệt: ("âm"/"dương", tháng, ngày) hoặc hàm tính ngày. lead = đăng trước bao nhiêu ngày.
+SPECIAL_DAYS = [
+    {"name": "Tết Nguyên Đán", "lunar": (1, 1), "lead": 14, "scripts": ["dem-canh-banh-chung"],
+     "topics": ["Tiền lì xì mừng tuổi", "Quần áo mới ngày Tết", "Mâm ngũ quả ngày Tết", "Đêm giao thừa đốt pháo hoa giấy"]},
+    {"name": "Rằm tháng Giêng", "lunar": (1, 15), "lead": 3, "topics": ["Bà đi lễ chùa rằm tháng Giêng"]},
+    {"name": "Tết Hàn thực", "lunar": (3, 3), "lead": 3, "topics": ["Nặn bánh trôi bánh chay cùng bà"]},
+    {"name": "Tết Đoan Ngọ (giết sâu bọ)", "lunar": (5, 5), "lead": 3,
+     "topics": ["Sáng mùng 5 ăn rượu nếp, hoa quả giết sâu bọ"]},
+    {"name": "Rằm tháng Bảy - Vu Lan", "lunar": (7, 15), "lead": 5,
+     "topics": ["Bông hồng cài áo mùa Vu Lan", "Trẻ con giành đồ cúng cô hồn"]},
+    {"name": "Trung thu", "lunar": (8, 15), "lead": 14, "scripts": ["trung-thu-den-ong-sao"],
+     "topics": ["Tò he nặn bằng bột gạo", "Phá cỗ trông trăng", "Đèn kéo quân của ông"]},
+    {"name": "Ông Công Ông Táo", "lunar": (12, 23), "lead": 4, "topics": ["Thả cá chép tiễn ông Táo"]},
+    {"name": "Quốc tế Phụ nữ 8/3", "solar": (3, 8), "lead": 3, "topics": ["Tặng bà bông hoa giấy ngày 8/3"]},
+    {"name": "Quốc tế Thiếu nhi 1/6", "solar": (6, 1), "lead": 5,
+     "topics": ["Chơi đồ hàng", "Gấp máy bay giấy, thuyền giấy", "Quà 1/6 ngày xưa"]},
+    {"name": "Ngày Gia đình Việt Nam 28/6", "solar": (6, 28), "lead": 3, "topics": ["Cả nhà ăn cơm chung mâm"]},
+    {"name": "Khai giảng 5/9", "solar": (9, 5), "lead": 10, "scripts": ["but-may-muc-tim"],
+     "topics": ["Bao vở bằng giấy báo", "Khăn quàng đỏ", "Bố chở đi học bằng xe đạp"]},
+    {"name": "Phụ nữ Việt Nam 20/10", "solar": (10, 20), "lead": 3, "topics": ["Món quà Bin tự làm tặng bà"]},
+    {"name": "Nhà giáo Việt Nam 20/11", "solar": (11, 20), "lead": 10, "scripts": ["but-may-muc-tim"],
+     "topics": ["Tặng hoa cô giáo ngày 20/11", "Lưu bút cuối năm"]},
+    {"name": "Giáng sinh", "solar": (12, 24), "lead": 4, "topics": ["Đi xem hang đá đêm Giáng sinh"]},
+    {"name": "Ngày của Mẹ", "nth_sunday": (5, 2), "lead": 4, "topics": ["Bin giúp mẹ rửa bát"]},
+    {"name": "Ngày của Cha", "nth_sunday": (6, 3), "lead": 4, "topics": ["Bố chở Bin đi câu cá"]},
+]
+
+
+def _event_date(ev: dict, year: int) -> dt.date | None:
+    try:
+        if "lunar" in ev:
+            from lunardate import LunarDate
+
+            m, d = ev["lunar"]
+            return LunarDate(year, m, d).to_solar_date()
+        if "solar" in ev:
+            m, d = ev["solar"]
+            return dt.date(year, m, d)
+        if "nth_sunday" in ev:
+            m, n = ev["nth_sunday"]
+            first = dt.date(year, m, 1)
+            return first + dt.timedelta(days=(6 - first.weekday()) % 7 + 7 * (n - 1))
+    except Exception:
+        return None
+    return None
+
+
+def upcoming(days: int = 45, today: dt.date | None = None) -> list[dict]:
+    """Các ngày đặc biệt sắp tới (kể cả hôm nay), sắp theo ngày."""
+    today = today or dt.date.today()
+    out = []
+    for ev in SPECIAL_DAYS:
+        for y in (today.year - 1, today.year, today.year + 1):
+            d = _event_date(ev, y)
+            if d and 0 <= (d - today).days <= days:
+                out.append({**ev, "date": d.isoformat(), "days_left": (d - today).days,
+                            "active": (d - today).days <= ev.get("lead", 3)})
+    return sorted(out, key=lambda e: e["days_left"])
+
+
+def lunar_today(today: dt.date | None = None) -> str:
+    try:
+        from lunardate import LunarDate
+
+        ld = LunarDate.from_solar_date(*(today or dt.date.today()).timetuple()[:3])
+        return f"{ld.day}/{ld.month} âm lịch"
+    except Exception:
+        return ""
+
+
 def seasonal_preferences() -> tuple[list[str], list[str]]:
+    """Kịch bản / chủ đề nên ưu tiên lúc này: ngày lễ sắp tới (đăng trước vài ngày) rồi tới mùa."""
     scripts, topics = [], []
+    for ev in upcoming(30):
+        if ev["active"]:
+            scripts += ev.get("scripts", [])
+            topics += ev.get("topics", [])
     for s in active_seasons():
         scripts += s.get("scripts", [])
         topics += s.get("topics", [])
-    return scripts, topics
+    return list(dict.fromkeys(scripts)), list(dict.fromkeys(topics))
 
 
 # ---------------- số liệu & xếp hạng ----------------
