@@ -32,6 +32,8 @@ Kịch bản ─► Giọng đọc ─► Ảnh 3D giữ đúng nhân vật ─�
 
 ### 1b. Máy có card NVIDIA? Bật chế độ GPU (khuyên dùng)
 
+📄 **Hướng dẫn từng bước: [HUONG_DAN_GPU.md](HUONG_DAN_GPU.md)**
+
 Nhấp đúp **`setup-gpu.bat`** (sau khi đã chạy `setup.bat`). Script tự cài PyTorch bản CUDA và thư viện AI, rồi **tạo thử 1 ảnh + 1 clip** vào `output\gpu_test\`. Lần đầu tải model khoảng 20–30 GB.
 
 Bật GPU xong thì tool tự dùng card, không cần chỉnh gì:
