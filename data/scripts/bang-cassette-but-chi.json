@@ -1,0 +1,59 @@
+{
+  "id": "bang-cassette-but-chi",
+  "topic": "Băng cassette và cây bút chì",
+  "title": "Bin cứu cuộn băng của ông",
+  "hook": "Đài của ông nhai băng, Bin làm gì?",
+  "ambience": "lang_que",
+  "scenes": [
+    {
+      "text": "Rẹt rẹt rẹt... cái đài của ông lại nhai băng, đúng bài ông thích nhất.",
+      "images": [
+        "{ONG} looking surprised at an old silver cassette radio with brown tape spilling out, {BIN} beside him"
+      ]
+    },
+    {
+      "speaker": "ong",
+      "text": "Thôi xong, cuộn băng của ông rồi.",
+      "images": [
+        "{ONG} looking sad holding a tangled cassette tape in his hands"
+      ]
+    },
+    {
+      "text": "Bin chạy đi lấy cây bút chì, cắm vào cuộn băng, quay quay quay.",
+      "images": [
+        "{BIN} running across the room holding up a pencil",
+        "{BIN} turning a pencil inserted in a cassette tape spool, tongue out"
+      ],
+      "motion": "Bin turns the pencil in the cassette spool quickly, concentrating"
+    },
+    {
+      "text": "Bật lại, tiếng nhạc vang lên. Hai ông cháu vỗ tay như vừa thắng giải.",
+      "images": [
+        "{ONG} and {BIN} clapping and laughing in front of the cassette player, warm light"
+      ],
+      "motion": "grandpa and Bin clap and laugh, swaying to the music"
+    },
+    {
+      "speaker": "ong",
+      "text": "Cháu ông giỏi quá!",
+      "images": [
+        "{ONG} hugging {BIN} proudly, both smiling"
+      ]
+    },
+    {
+      "text": "Bạn đã bao giờ dùng bút chì cứu cuộn băng chưa?",
+      "images": [
+        "{BIN} hugging an old cassette radio and smiling, cozy living room"
+      ]
+    }
+  ],
+  "caption": "Cây bút chì cứu cả cuộn băng của ông 📼 Bạn từng làm vậy chưa?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#bangcassette"
+  ]
+}

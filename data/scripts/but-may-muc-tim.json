@@ -1,0 +1,57 @@
+{
+  "id": "but-may-muc-tim",
+  "topic": "Bút máy, mực tím và vở ô ly",
+  "title": "Bin tập viết mực tím",
+  "hook": "Bin tập viết... mực lên cả MẶT",
+  "ambience": "lang_que",
+  "scenes": [
+    {
+      "text": "Ngày đầu vào lớp một, ông mua cho Bin cây bút máy và lọ mực tím.",
+      "images": [
+        "{ONG} handing a fountain pen and a small bottle of purple ink to {BIN}, Bin's eyes sparkling"
+      ]
+    },
+    {
+      "text": "Tối đó, ông cầm tay Bin, nắn từng nét chữ dưới ngọn đèn.",
+      "images": [
+        "{ONG} gently guiding {BIN}'s hand writing in a squared notebook at a wooden table, oil lamp, warm light"
+      ]
+    },
+    {
+      "text": "Mới được ba dòng, tay tím, mặt tím, áo cũng tím.",
+      "images": [
+        "{BIN} with purple ink smudges on his cheeks and fingers grinning proudly"
+      ],
+      "motion": "Bin grins proudly showing his ink-stained hands, giggling"
+    },
+    {
+      "text": "Rồi... choang! Lọ mực đổ lênh láng.",
+      "images": [
+        "{BIN} looking panicked at spilled purple ink on the wooden table"
+      ]
+    },
+    {
+      "speaker": "ong",
+      "text": "Không sao, mực đổ thì lau, chữ xấu thì tập. Cháu ông giỏi lắm!",
+      "images": [
+        "{ONG} calmly wiping the ink with a cloth and smiling, {BIN} relieved"
+      ],
+      "motion": "grandpa wipes the ink calmly and smiles, Bin relaxes and smiles back"
+    },
+    {
+      "text": "Ai là người dạy bạn viết những nét chữ đầu tiên?",
+      "images": [
+        "{ONG} and {BIN} sitting at the desk smiling together over a notebook"
+      ]
+    }
+  ],
+  "caption": "Nét chữ đầu tiên là ông cầm tay viết ✒️ Ai dạy bạn viết chữ đầu tiên?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#mucim"
+  ]
+}

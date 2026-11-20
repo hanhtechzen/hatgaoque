@@ -1,0 +1,31 @@
+# Môi trường Python
+.venv/
+__pycache__/
+*.pyc
+
+# BÍ MẬT - không bao giờ đưa lên GitHub
+.env
+
+# Dữ liệu sinh ra khi chạy (nặng hoặc riêng tư)
+output/
+logs/
+data/state.json
+data/image_cache/
+data/metrics.json
+data/comments.json
+data/tiktok.json
+data/scripts_luu_tru/
+data/*.tmp
+assets/_da_go/
+assets/music/*.mp3
+assets/music/*.m4a
+assets/music/*.wav
+assets/music/*.ogg
+assets/sfx/*.mp3
+assets/sfx/*.m4a
+assets/sfx/*.wav
+assets/sfx/*.ogg
+assets/voice/
+
+# Cài đặt riêng của máy
+.claude/

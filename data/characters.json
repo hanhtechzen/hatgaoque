@@ -1,0 +1,30 @@
+{
+  "BIN": {
+    "name": "Bé Bin",
+    "look": "Bin: chubby 4-year-old Vietnamese boy, round face, rosy cheeks, big dark eyes, short black hair with a tuft on top, light blue collared shirt, red shorts",
+    "ref_url": "https://media.pollinations.ai/4194374c-47bc-4470-b9f4-38cc4eda69ac",
+    "ref_uploaded": "2026-11-20"
+  },
+  "BA": {
+    "name": "Bà nội",
+    "look": "Grandma: wrinkled elderly Vietnamese grandmother about 75, white hair in a bun, brown ao ba ba blouse",
+    "ref_url": "https://media.pollinations.ai/c39f77ca-18c3-481c-a752-d3c78c95eb87",
+    "ref_uploaded": "2026-11-20"
+  },
+  "ONG": {
+    "name": "Ông nội",
+    "look": "Grandpa: gentle old Vietnamese man about 75, short white hair, thin white goatee, beige shirt"
+  },
+  "ME": {
+    "name": "Mẹ",
+    "look": "Mom: young Vietnamese mother, black hair tied back, pink floral blouse"
+  },
+  "BO": {
+    "name": "Bố",
+    "look": "Dad: young Vietnamese father, short black hair, green army-style shirt"
+  },
+  "BANBE": {
+    "name": "Bạn của Bin",
+    "look": "village kids: cute chubby Vietnamese children in colorful 1990s clothes"
+  }
+}

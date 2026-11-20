@@ -1,0 +1,59 @@
+{
+  "ambience": "ve_sau",
+  "caption": "Nồi cơm của bà đổi được một đoạn kẹo kéo 😆 Bạn từng mang gì đi đổi kẹo chưa?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#keokeo",
+    "#hoainiem"
+  ],
+  "hook": "Bin mang NỒI CƠM của bà đi đổi kẹo?!",
+  "id": "dong-nat-doi-keo-keo",
+  "scenes": [
+    {
+      "images": [
+        "{BIN} springing up from a bamboo bed with wide excited eyes, sunny summer noon in an old village house"
+      ],
+      "motion": "Bin springs up from the bed and runs to the door excitedly",
+      "text": "Trưa hè, tiếng rao ai đồng nát sắt vụn bán đi vang đầu ngõ. Bin bật dậy như lò xo."
+    },
+    {
+      "images": [
+        "{BIN} running down a sunny village alley hugging a big aluminum cooking pot, mischievous grin"
+      ],
+      "motion": "Bin runs happily down the alley hugging the big pot",
+      "text": "Lục mãi chẳng có gì, Bin ôm luôn cái nồi nhôm của bà chạy ra đổi kẹo kéo."
+    },
+    {
+      "images": [
+        "{BIN} sitting on a doorstep biting a long stick of white taffy candy, eyes closed with happiness"
+      ],
+      "text": "Đang ngồi gặm kẹo ngon lành thì..."
+    },
+    {
+      "images": [
+        "{BA} standing in the kitchen doorway looking around puzzled, hands on hips"
+      ],
+      "speaker": "ba",
+      "text": "Bin ơi, cái nồi cơm của bà đâu rồi?"
+    },
+    {
+      "images": [
+        "{BA} laughing and patting {BIN}'s head while Bin hides candy behind his back grinning sheepishly"
+      ],
+      "motion": "grandma shakes her head then laughs and pats Bin's head, Bin grins sheepishly",
+      "text": "Bin giấu kẹo sau lưng, cười trừ. Bà lắc đầu, rồi lại bật cười xoa đầu thằng cháu nghịch."
+    },
+    {
+      "images": [
+        "{BIN} and {BA} sitting together on the porch sharing taffy candy, both laughing, sunset"
+      ],
+      "text": "Ngày bé, bạn đã từng mang gì đi đổi kẹo chưa?"
+    }
+  ],
+  "title": "Bin mang nồi của bà đi đổi kẹo",
+  "topic": "Đổi đồng nát lấy kẹo kéo"
+}

@@ -1,0 +1,57 @@
+{
+  "id": "dem-canh-banh-chung",
+  "topic": "Đêm canh nồi bánh chưng",
+  "title": "Chiếc bánh chưng méo của Bin",
+  "hook": "Chiếc bánh chưng XẤU nhất nhà",
+  "ambience": "bep_cui",
+  "scenes": [
+    {
+      "text": "Chiều ba mươi, cả nhà ngồi gói bánh chưng. Bin cũng nhất định đòi gói một chiếc.",
+      "images": [
+        "{BA} wrapping square sticky rice cakes in green dong leaves on a bamboo tray, {BIN} watching eagerly"
+      ]
+    },
+    {
+      "text": "Gói xong, chiếc bánh méo xệch, lạt buộc lung tung.",
+      "images": [
+        "{BIN} proudly holding up a tiny lopsided rice cake wrapped in leaves, strings everywhere"
+      ]
+    },
+    {
+      "speaker": "ba",
+      "text": "Bánh của cháu bà là đẹp nhất nhà!",
+      "images": [
+        "{BA} hugging {BIN} and laughing, banh chung on the tray"
+      ],
+      "motion": "grandma hugs Bin and laughs warmly"
+    },
+    {
+      "text": "Đêm canh nồi bánh, ông vùi khoai vào tro. Bin định thức đến sáng...",
+      "images": [
+        "{ONG} handing a roasted sweet potato to {BIN} who blows on it with puffed cheeks, warm firelight"
+      ],
+      "motion": "Bin blows on the hot sweet potato with puffed cheeks, grandpa smiles"
+    },
+    {
+      "text": "...nhưng chưa đến mười giờ đã ngủ gục trong lòng ông.",
+      "images": [
+        "{BIN} fast asleep in {ONG}'s lap wrapped in a wool blanket beside the fire, grandpa smiling down at him"
+      ]
+    },
+    {
+      "text": "Tết này nhà bạn còn tự gói bánh chưng không?",
+      "images": [
+        "{ONG}, {BA} and {BIN} smiling together around a tray of banh chung, Tet decorations with peach blossoms"
+      ]
+    }
+  ],
+  "caption": "Bánh méo nhưng là bánh đẹp nhất nhà 🧧 Tết này nhà bạn còn tự gói bánh không?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#tetxua"
+  ]
+}

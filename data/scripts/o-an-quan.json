@@ -1,0 +1,57 @@
+{
+  "id": "o-an-quan",
+  "topic": "Ô ăn quan",
+  "title": "Ông lại thua Bin ô ăn quan",
+  "hook": "Bin thắng ông... thật không?",
+  "ambience": "lang_que",
+  "scenes": [
+    {
+      "text": "Chiều nào ông cũng kẻ bàn ô ăn quan giữa sân, rủ Bin ra chơi.",
+      "images": [
+        "{ONG} squatting and drawing an o an quan game board with a piece of brick on a brick courtyard, {BIN} watching curiously"
+      ]
+    },
+    {
+      "text": "Bin rải quân, đếm từng viên, mặt nghiêm như đang đánh trận.",
+      "images": [
+        "{BIN} concentrating hard, tongue out, dropping pebbles one by one into chalk squares"
+      ],
+      "motion": "Bin carefully drops pebbles one by one, concentrating with tongue out"
+    },
+    {
+      "speaker": "ong",
+      "text": "Chết rồi, ông lại thua cháu rồi!",
+      "images": [
+        "{ONG} pretending to be shocked, holding his head with both hands, funny expression"
+      ]
+    },
+    {
+      "text": "Bin nhảy cẫng lên reo hò. Ông cười, mắt híp cả lại.",
+      "images": [
+        "{BIN} jumping and cheering with both arms up holding pebbles, {ONG} laughing"
+      ],
+      "motion": "Bin jumps up and down cheering, grandpa laughs heartily"
+    },
+    {
+      "text": "Mãi sau này Bin mới biết, ông cố tình thua, chỉ để thấy cháu cười.",
+      "images": [
+        "{ONG} smiling softly watching {BIN} celebrate, warm golden light"
+      ]
+    },
+    {
+      "text": "Hồi nhỏ, ai là người hay nhường bạn nhất?",
+      "images": [
+        "{ONG} and {BIN} sitting side by side on the courtyard step, grandpa's arm around Bin, sunset"
+      ]
+    }
+  ],
+  "caption": "Ông thua rất khéo, cháu thắng rất vui 🥹 Hồi nhỏ ai hay nhường bạn nhất?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#oanquan"
+  ]
+}

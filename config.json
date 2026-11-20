@@ -1,0 +1,108 @@
+{
+  "videos_per_run": 2,
+  "keep_work_files": false,
+  "tts": {
+    "provider": "vieneu",
+    "vieneu_voice": "Thiện Minh",
+    "tempo": 1.0,
+    "speakers": {
+      "ba": {
+        "provider": "mai",
+        "voice": "vi-VN-Harper",
+        "tempo": 0.95
+      },
+      "ong": {
+        "provider": "vieneu",
+        "voice": "Thiền Tâm Đức",
+        "tempo": 0.93
+      }
+    },
+    "mai": {
+      "model": "microsoft/mai-voice-2.1",
+      "voice": "vi-VN-Grant",
+      "speakers": {
+        "ba": "vi-VN-Harper",
+        "ong": "vi-VN-Grant"
+      }
+    },
+    "edge_voice": "vi-VN-HoaiMyNeural",
+    "edge_rate": "+0%"
+  },
+  "script": {
+    "order": [
+      "bank",
+      "pollinations",
+      "gemini",
+      "ollama"
+    ],
+    "pollinations_model": "openai/gpt-5.4-mini",
+    "gemini_model": "gemini-flash-latest",
+    "ollama_model": "qwen2.5:7b",
+    "ollama_url": "http://localhost:11434"
+  },
+  "images": {
+    "provider": "auto",
+    "style": "hoat_hinh_3d",
+    "pollinations_model": "zimage",
+    "ref_model": "klein",
+    "price": {
+      "zimage": 0.004,
+      "klein": 0.005
+    },
+    "pollinations_delay_sec": 46,
+    "local_model": "SG161222/RealVisXL_V4.0",
+    "local_steps": 28,
+    "local_guidance": 5.0,
+    "retro_filter": false,
+    "color_grade": "xua_sang"
+  },
+  "budget_usd_per_video": 0.18,
+  "usd_to_vnd": 26000,
+  "motion": {
+    "enabled": true,
+    "model": "seedance-pro",
+    "resolution": "480p",
+    "price_per_sec": 0.0099225,
+    "clip_sec": 4,
+    "max_shots": 3
+  },
+  "video": {
+    "fps": 30,
+    "series_name": "HẠT GẠO QUÊ",
+    "scene_gap_sec": 0.3,
+    "caption_words": 4,
+    "music_volume": 0.22,
+    "ambience_volume": 0.35,
+    "font": "C:/Windows/Fonts/arialbd.ttf",
+    "font_name": "Arial",
+    "outro": {
+      "enabled": true,
+      "text": "Theo dõi HẠT GẠO QUÊ\\Nđể xem tập sau nhé!",
+      "voice": "Theo dõi Hạt Gạo Quê để xem tập sau nha!",
+      "min_sec": 2.0
+    }
+  },
+  "publish": {
+    "facebook": {
+      "enabled": false,
+      "mode": "scheduled",
+      "time": "19:30",
+      "graph_version": "v23.0",
+      "times": [
+        "11:30",
+        "19:30"
+      ],
+      "first_comment": true
+    },
+    "tiktok": {
+      "times": [
+        "12:00",
+        "20:30"
+      ]
+    }
+  },
+  "ai_note": "Hình ảnh minh họa được tạo bằng AI.",
+  "growth": {
+    "auto_reply": false
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "id": "mat-dien-mua-he",
+  "topic": "Mất điện mùa hè và chiếc quạt nan",
+  "title": "Mất điện mà Bin lại vui",
+  "hook": "Mất điện mà Bin lại VUI?",
+  "ambience": "dem_que",
+  "scenes": [
+    {
+      "text": "Phụt! Cả xóm tối om. Bin giật mình nhảy dựng lên.",
+      "images": [
+        "{BIN} jumping in surprise as the lights go out in an old village house, oil lamp on the table, funny face"
+      ]
+    },
+    {
+      "speaker": "ba",
+      "text": "Ra đây với bà, hai bà cháu mình đếm sao.",
+      "images": [
+        "{BA} smiling and laying a straw mat in the courtyard, lantern beside her"
+      ]
+    },
+    {
+      "text": "Hai bà cháu nằm trên chiếu, Bin chỉ tay lên trời, đếm mãi không hết sao.",
+      "images": [
+        "{BA} and {BIN} lying on a straw mat in the courtyard pointing at the starry sky"
+      ],
+      "motion": "Bin points at the stars counting, grandma smiles and points too"
+    },
+    {
+      "text": "Bà phe phẩy quạt nan, quạt mãi cho đến khi Bin ngủ say.",
+      "images": [
+        "{BA} gently fanning a sleepy {BIN} with a woven bamboo fan, soft warm light"
+      ],
+      "motion": "grandma gently fans Bin with a bamboo fan, Bin's eyes slowly close"
+    },
+    {
+      "text": "Điện có lại, cả xóm reo ầm lên. Chỉ có Bin là... vẫn ngủ ngon lành.",
+      "images": [
+        "{BIN} sleeping and smiling on the mat, the house light back on, {BA} smiling down at him"
+      ]
+    },
+    {
+      "text": "Bạn có nhớ tiếng cả xóm reo lên lúc có điện không?",
+      "images": [
+        "{BA} hugging {BIN} on the straw mat, both smiling, stars above"
+      ]
+    }
+  ],
+  "caption": "Mất điện mà vui, vì được nằm đếm sao với bà 🌙 Bạn nhớ tiếng 'có điện rồi' không?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#muahe"
+  ]
+}

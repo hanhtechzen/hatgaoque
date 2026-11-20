@@ -1,0 +1,68 @@
+{
+  "title": "Bin bắn bi ở sân đình",
+  "hook": "Bin THUA sạch bi ở sân đình!",
+  "ambience": "lang_que",
+  "scenes": [
+    {
+      "text": "Bin ôm túi bi, chạy ra sân đình thi bắn với bạn.",
+      "images": [
+        "{BIN} running toward a village communal house courtyard, marbles in his hands, 1990s Vietnamese countryside, bright warm daylight",
+        "{BIN} and {BANBE} crouching on packed earth near a banyan tree, colorful glass marbles scattered, old brick communal house in the background, cheerful expressions, no text"
+      ],
+      "motion": "Bin runs fast, squats down, and carefully lines up his marble."
+    },
+    {
+      "text": "Bin búng mạnh quá, bi văng xuống rãnh, cả đám cười khúc khích.",
+      "images": [
+        "{BIN} kneeling in surprise, watching a marble roll into a narrow ditch, {BANBE} laughing beside him, village courtyard details, warm sunlight",
+        "{BIN} reaching into a small muddy ditch with a determined face, marbles and chalk circle on the ground, 1990s rural Vietnam, cute humorous mood"
+      ],
+      "motion": "Bin flinches, then leans forward and peeks into the ditch."
+    },
+    {
+      "text": "Bin phụng phịu vì mất bi, bụng đói mà chưa tới bữa.",
+      "images": [
+        "{BIN} sitting on the ground with puffed cheeks, holding an empty pouch, village đình courtyard, soft warm light, playful sadness",
+        "{BIN} looking at his stomach, a few marbles in the dust, old tiled-roof communal house, nostalgic countryside setting"
+      ],
+      "motion": "Bin pouts and rubs his tummy, looking both sad and hungry."
+    },
+    {
+      "speaker": "ong",
+      "text": "Mất bi thì nhặt lại, thua thì mai bắn tiếp, cháu ạ.",
+      "images": [
+        "{ONG} smiling kindly and handing a small handful of marbles to {BIN}, old farmer clothes, village communal house courtyard, warm bright afternoon",
+        "{ONG} crouching beside {BIN} and pointing at the chalk circle on the ground, gentle teasing smile, no text"
+      ],
+      "motion": "Ong crouches down and places the marbles back into Bin’s palm."
+    },
+    {
+      "text": "Bin cười tít mắt, ôm ông, rồi được thưởng thêm chiếc kẹo lạc.",
+      "images": [
+        "{BIN} hugging {ONG} tightly, both smiling in the courtyard, marbles still on the ground, 1990s Vietnamese village atmosphere",
+        "{BIN} happily biting a peanut candy while {ONG} chuckles, sunlit communal house yard, cozy and heartwarming"
+      ],
+      "motion": "Bin hugs ông tightly, then munches the candy with sparkling eyes."
+    },
+    {
+      "text": "Nhà bạn có từng bắn bi ở sân đình như Bin không?",
+      "images": [
+        "{BIN} waving excitedly with marbles in hand, village communal house courtyard, inviting friendly mood",
+        "{BIN} and {BANBE} sitting on the ground, ready for another marble game, bright nostalgic countryside scene"
+      ],
+      "motion": "Bin waves at the viewer and invites them to share memories."
+    }
+  ],
+  "caption": "Tuổi thơ ở sân đình luôn có tiếng bi lách cách và vài cú búng “đi lạc” 😂 Bạn có từng thua sạch bi như Bin chưa?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoainiem",
+    "#banbi",
+    "#langque"
+  ],
+  "topic": "Bắn bi ở sân đình",
+  "id": "ban-bi-o-san-dinh"
+}

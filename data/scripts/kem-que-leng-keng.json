@@ -1,0 +1,57 @@
+{
+  "id": "kem-que-leng-keng",
+  "topic": "Kem que leng keng",
+  "title": "Que kem bà mua cho Bin",
+  "hook": "Không có tiền, Bin thèm kem chảy nước miếng",
+  "ambience": "ve_sau",
+  "scenes": [
+    {
+      "text": "Leng keng, leng keng... xe kem đến! Bin chạy ù ra ngõ.",
+      "images": [
+        "{BIN} running out of the gate toward an ice cream seller's bicycle with a wooden box, sunny village alley"
+      ],
+      "motion": "Bin runs out excitedly toward the ice cream seller's bicycle"
+    },
+    {
+      "text": "Nhưng túi rỗng không. Bin đứng nhìn, nuốt nước bọt ừng ực.",
+      "images": [
+        "{BIN} standing with hands behind his back staring longingly at ice pops, funny drooling expression"
+      ]
+    },
+    {
+      "speaker": "ba",
+      "text": "Bin ơi, ra đây bà bảo.",
+      "images": [
+        "{BA} calling from the gate with one hand in her blouse pocket, smiling"
+      ]
+    },
+    {
+      "text": "Bà lấy trong túi áo mấy đồng tiền lẻ gấp làm tư, mua cho Bin que kem đậu xanh.",
+      "images": [
+        "{BA} giving a folded small banknote to the ice cream seller while {BIN} watches amazed"
+      ]
+    },
+    {
+      "text": "Kem chảy tong tong xuống tay, Bin liếm vội, bà đứng cười.",
+      "images": [
+        "{BIN} licking a melting green bean ice pop dripping down his hand, {BA} laughing beside him"
+      ],
+      "motion": "Bin licks the melting ice pop quickly, grandma laughs"
+    },
+    {
+      "text": "Vị kem tuổi thơ của bạn là vị gì?",
+      "images": [
+        "{BA} and {BIN} sitting on a doorstep in the shade, Bin offering grandma a bite of his ice pop"
+      ]
+    }
+  ],
+  "caption": "Que kem đậu xanh bà mua là ngon nhất 🍦 Vị kem tuổi thơ của bạn là gì?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#kemque"
+  ]
+}

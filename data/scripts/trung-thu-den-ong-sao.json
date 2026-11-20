@@ -1,0 +1,57 @@
+{
+  "id": "trung-thu-den-ong-sao",
+  "topic": "Trung thu đèn ông sao",
+  "title": "Đèn ông sao của Bin bốc cháy",
+  "hook": "Đèn ông sao của Bin... BỐC CHÁY!",
+  "ambience": "dem_que",
+  "scenes": [
+    {
+      "text": "Ông chẻ tre, dán giấy bóng kính đỏ, làm cho Bin chiếc đèn ông sao thật to.",
+      "images": [
+        "{ONG} making a red star lantern from bamboo strips on the porch, {BIN} holding red cellophane paper, golden afternoon"
+      ]
+    },
+    {
+      "text": "Tối rằm, Bin rước đèn đi khắp xóm, oai như tướng.",
+      "images": [
+        "{BIN} marching proudly along a village lane carrying a glowing red star lantern, {BANBE} following, full moon"
+      ],
+      "motion": "Bin marches proudly swinging his glowing star lantern, kids follow behind"
+    },
+    {
+      "text": "Đang vui thì một cơn gió thổi qua... phừng, đèn bén lửa!",
+      "images": [
+        "{BIN} looking shocked as his paper star lantern catches fire, funny exaggerated surprised face"
+      ]
+    },
+    {
+      "text": "Bin mếu máo chạy về nhà.",
+      "images": [
+        "{BIN} running home pouting with teary eyes holding a burnt lantern frame"
+      ],
+      "motion": "Bin runs home pouting with teary eyes"
+    },
+    {
+      "speaker": "ong",
+      "text": "Không sao, mai ông làm cho cái to gấp đôi!",
+      "images": [
+        "{ONG} kneeling and patting {BIN}'s head, comforting him, warm lantern light"
+      ]
+    },
+    {
+      "text": "Trung thu năm ấy, đèn của bạn sống được bao lâu?",
+      "images": [
+        "{ONG} and {BIN} sitting on the porch under the full moon with a new big star lantern, both smiling"
+      ]
+    }
+  ],
+  "caption": "Đèn cháy rồi nhưng ông hứa làm cái to gấp đôi 🌕 Đèn của bạn sống được bao lâu?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#trungthu"
+  ]
+}

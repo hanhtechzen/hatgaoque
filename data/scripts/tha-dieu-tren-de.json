@@ -1,0 +1,57 @@
+{
+  "id": "tha-dieu-tren-de",
+  "topic": "Thả diều trên đê",
+  "title": "Diều của ông mắc ngọn tre",
+  "hook": "Diều của ông bay mất... lên NGỌN TRE",
+  "ambience": "gio_dong",
+  "scenes": [
+    {
+      "text": "Gió nồm lên, ông làm cho Bin con diều bằng giấy báo cũ.",
+      "images": [
+        "{ONG} gluing old newspaper onto a bamboo kite frame on the porch, {BIN} helping with sticky hands"
+      ]
+    },
+    {
+      "text": "Hai ông cháu chạy lên đê. Diều vút lên cao, Bin hét toáng lên.",
+      "images": [
+        "{ONG} and {BIN} on a grassy river dike looking up at a kite flying high, both cheering"
+      ],
+      "motion": "Bin runs along the dike pulling the kite string, the kite rises, grandpa cheers"
+    },
+    {
+      "text": "Bỗng gió giật mạnh, diều lao thẳng vào ngọn tre.",
+      "images": [
+        "a paper kite stuck on top of a bamboo grove, {BIN} looking up shocked with mouth open"
+      ]
+    },
+    {
+      "text": "Ông lấy sào khều mãi, khều mãi... rách mất một góc.",
+      "images": [
+        "{ONG} poking at the stuck kite with a long bamboo pole, {BIN} pointing and laughing"
+      ],
+      "motion": "grandpa pokes at the kite with a long pole, Bin laughs and points"
+    },
+    {
+      "speaker": "ong",
+      "text": "Không sao, mai ông cháu mình làm con to hơn!",
+      "images": [
+        "{ONG} and {BIN} sitting on the dike at sunset with a torn kite, smiling"
+      ]
+    },
+    {
+      "text": "Chiếc diều đầu tiên của bạn là ai làm cho?",
+      "images": [
+        "{BIN} holding up a slightly torn homemade kite and grinning, {ONG} smiling behind him"
+      ]
+    }
+  ],
+  "caption": "Diều rách một góc nhưng chiều ấy vui nhất 🪁 Chiếc diều đầu tiên của bạn ai làm cho?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#thadieu"
+  ]
+}

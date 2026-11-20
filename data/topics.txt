@@ -1,0 +1,62 @@
+# Mỗi dòng là một chủ đề. Khi hết kịch bản viết sẵn, AI sẽ lấy ngẫu nhiên một chủ đề chưa dùng để viết.
+# Thêm chủ đề mới thoải mái, dòng bắt đầu bằng # sẽ bị bỏ qua.
+Nhảy dây và đánh chuyền
+Bắn bi ở sân đình
+Trốn tìm lúc chạng vạng
+Rồng rắn lên mây
+Gánh hàng rong buổi trưa
+Tò he nặn bằng bột gạo
+Tiếng nổ bỏng ngô ống ở đầu ngõ
+Chiếc xe đạp cũ của bố
+Nghe đài kể chuyện đêm khuya
+Thuê truyện tranh ở hàng sách
+Sưu tầm hình dán và giấy gói kẹo
+Máy chơi điện tử băng thời 9x
+Quán điện tử xèng
+Quán net những năm 2000
+Viết thư tay cho bạn
+Lưu bút cuối năm
+Cơm độn khoai sắn
+Giếng nước và chiếc gàu múc
+Bếp rơm và nồi cơm đất
+Tắm mưa đầu hạ
+Bắt cào cào, châu chấu
+Chăn trâu cắt cỏ
+Chợ phiên quê ngày xưa
+Áo len mẹ đan
+Quần áo mới ngày Tết
+Tiền lì xì mừng tuổi
+Mâm ngũ quả ngày Tết
+Kẹo lạc, kẹo vừng
+Bánh khúc nóng hổi
+Trốn ngủ trưa
+Ti vi đen trắng và chiếc ăng-ten
+Điện thoại bàn quay số
+Điện thoại công cộng dùng thẻ
+Điện thoại cục gạch và tin nhắn SMS
+Đĩa VCD karaoke
+Đám cưới quê rạp lá dừa
+Chiếu bóng lưu động ngoài sân kho
+Nuôi lợn đất tiết kiệm
+Hội làng đầu xuân
+Cây bàng sân trường
+Tiếng trống trường
+Khăn quàng đỏ
+Học bài dưới đèn dầu
+Xếp hàng tem phiếu thời bao cấp
+Quà vặt cổng trường: bò bía, ô mai
+Chơi đồ hàng
+Gấp máy bay giấy, thuyền giấy
+Ngủ màn chung cả nhà
+Ra đồng bắt cua, mò ốc
+Mùa gặt và sân phơi thóc
+Phim hoạt hình tối thứ bảy
+Bố chở đi học bằng xe đạp
+Bánh mì kẹp ngày đi thi
+Mùa lũ lụt ngày xưa
+Bơi ở ao làng
+Cắt tóc ở hiệu cắt tóc vỉa hè
+Mua sách giáo khoa cũ của anh chị
+Bao vở bằng giấy báo
+Sưu tầm tem thư
+Bà kể chuyện cổ tích

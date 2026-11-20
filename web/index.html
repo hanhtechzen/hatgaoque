@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hạt Gạo Quê Studio</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<aside class="side">
+  <div class="brand">🏡 <b>Hạt Gạo Quê</b><small>Studio</small></div>
+  <nav id="nav">
+    <a data-tab="home" class="active">🏠 Tổng quan</a>
+    <a data-tab="growth">🚀 Tăng trưởng</a>
+    <a data-tab="videos">🎬 Video</a>
+    <a data-tab="scripts">📝 Kịch bản</a>
+    <a data-tab="topics">💡 Chủ đề</a>
+    <a data-tab="chars">🧒 Nhân vật</a>
+    <a data-tab="voices">🎙️ Giọng đọc</a>
+    <a data-tab="audio">🎵 Âm thanh</a>
+    <a data-tab="settings">⚙️ Cài đặt</a>
+    <a data-tab="jobs">📋 Tác vụ <span id="jobBadge" class="badge hidden"></span></a>
+  </nav>
+</aside>
+
+<main>
+  <!-- TỔNG QUAN -->
+  <section id="tab-home" class="tab active">
+    <h1>Tổng quan</h1>
+    <div class="cards" id="stats"></div>
+    <div class="panel">
+      <h2>Tạo video</h2>
+      <p class="muted">Lấy kịch bản chưa dùng (hết thì AI tự viết theo chủ đề), tạo ảnh, giọng, dựng video. Nếu bật Facebook sẽ hẹn giờ đăng.</p>
+      <div class="row">
+        <button class="primary big" onclick="runNow(1)">▶ Tạo 1 video ngay</button>
+        <button class="big" onclick="runNow(7)">📅 Tạo trước 7 video (cả tuần)</button>
+        <label class="check"><input type="checkbox" id="noPost"> Chỉ tạo, chưa đăng</label>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Việc cần làm</h2>
+      <ul id="todo" class="todo"></ul>
+    </div>
+  </section>
+
+  <!-- TĂNG TRƯỞNG -->
+  <section id="tab-growth" class="tab">
+    <div class="head"><h1>🚀 Tăng trưởng</h1><button class="primary" onclick="growthSync()">↻ Đồng bộ số liệu & bình luận</button></div>
+    <div class="panel strategy" id="growthPlan"></div>
+    <div class="panel">
+      <div class="head"><h2>📱 Hàng chờ TikTok</h2><span class="muted" id="tkInfo"></span></div>
+      <p class="muted">TikTok chưa cho tool tự đăng: mỗi video bấm <b>Copy</b> → <b>Mở TikTok Studio</b> → kéo video vào → dán nội dung → <b>hẹn giờ</b> theo gợi ý → bấm <b>Đã đăng</b>. Khoảng 1 phút/video, hẹn trước được cả tuần.</p>
+      <div id="tkQueue" class="tkq"></div>
+    </div>
+    <div class="panel">
+      <div class="head"><h2>💬 Bình luận chờ trả lời</h2><span class="muted" id="cmInfo"></span></div>
+      <p class="muted">AI soạn sẵn câu trả lời cho bình luận Facebook mới. Sửa nếu cần rồi bấm <b>Gửi</b>. Trả lời bình luận sớm giúp video được đẩy mạnh hơn.</p>
+      <div id="cmList"></div>
+    </div>
+    <div class="panel">
+      <h2>🏆 Bảng xếp hạng video</h2>
+      <p class="muted">Điểm = lượt xem FB + TikTok, cộng thêm bình luận và chia sẻ (tính nặng hơn). AI học theo 5 tập dẫn đầu khi viết tập mới.</p>
+      <div style="overflow:auto"><table class="tbl" id="lbTable"></table></div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section id="tab-videos" class="tab">
+    <div class="head"><h1>Video đã tạo</h1><button onclick="loadVideos()">↻ Tải lại</button></div>
+    <div id="videoGrid" class="grid"></div>
+  </section>
+
+  <!-- KỊCH BẢN -->
+  <section id="tab-scripts" class="tab">
+    <div class="head"><h1>Kịch bản</h1>
+      <div class="row">
+        <input id="aiTopic" placeholder="Chủ đề, vd: Bắn bi ở sân đình" style="width:260px">
+        <button onclick="aiWrite()">✨ AI viết</button>
+        <button class="primary" onclick="newScript()">＋ Tập mới</button>
+      </div>
+    </div>
+    <div class="split">
+      <div class="list-col">
+        <div class="row">
+          <input id="scriptSearch" placeholder="Tìm..." oninput="renderScripts()">
+          <select id="scriptFilter" onchange="renderScripts()">
+            <option value="all">Tất cả</option><option value="new">Chưa dùng</option><option value="used">Đã dùng</option>
+          </select>
+        </div>
+        <div id="scriptList" class="slist"></div>
+      </div>
+      <div class="edit-col" id="scriptEditor"><div class="empty">Chọn một kịch bản bên trái để xem và sửa.</div></div>
+    </div>
+  </section>
+
+  <!-- CHỦ ĐỀ -->
+  <section id="tab-topics" class="tab">
+    <div class="head"><h1>Chủ đề</h1><button class="primary" onclick="saveTopics()">💾 Lưu</button></div>
+    <p class="muted">Khi hết kịch bản có sẵn, tool lấy ngẫu nhiên một chủ đề chưa dùng để AI viết. Bấm ✨ để AI viết ngay một tập cho chủ đề đó.</p>
+    <div class="row"><input id="newTopic" placeholder="Thêm chủ đề mới..." style="flex:1" onkeydown="if(event.key==='Enter')addTopic()"><button onclick="addTopic()">＋ Thêm</button></div>
+    <div id="topicList" class="topics"></div>
+  </section>
+
+  <!-- NHÂN VẬT -->
+  <section id="tab-chars" class="tab">
+    <h1>Nhân vật</h1>
+    <p class="muted">Ảnh mẫu giúp mọi cảnh vẽ đúng gương mặt nhân vật. Sửa mô tả (tiếng Anh) rồi bấm "Vẽ lại". Mỗi lần vẽ chưa tới 100đ.</p>
+    <div id="charGrid" class="grid chars"></div>
+  </section>
+
+  <!-- GIỌNG ĐỌC -->
+  <section id="tab-voices" class="tab">
+    <div class="head"><h1>Giọng đọc</h1><button class="primary" onclick="saveVoices()">💾 Lưu giọng</button></div>
+    <p class="muted"><b>VieNeu</b>: chạy trên máy, 0đ. <b>MAI</b>: giọng Microsoft qua Pollinations, dùng phần miễn phí hằng ngày.</p>
+    <div class="panel" id="voiceRows"></div>
+    <div class="panel">
+      <h2>Câu nghe thử</h2>
+      <textarea id="sampleText" rows="2">Trưa hè, tiếng rao ai đồng nát sắt vụn bán đi vang đầu ngõ. Bin bật dậy như lò xo, chạy ù ra cổng.</textarea>
+    </div>
+  </section>
+
+  <!-- ÂM THANH -->
+  <section id="tab-audio" class="tab">
+    <h1>Âm thanh</h1>
+    <div class="panel ai-panel">
+      <div class="head"><h2>✨ Để AI sáng tác nhạc & âm thanh cho kênh</h2>
+        <button class="primary big" id="aiAudioBtn" onclick="aiAudio()">✨ Tạo bằng AI</button></div>
+      <p class="muted" id="aiAudioInfo">AI sáng tác 6 bài nhạc nền riêng (nhẹ nhàng, vui nhộn, sáo trúc, piano ông bà, tinh nghịch, Trung thu - Tết) và 8 âm thanh không khí.
+        Tạo <b>một lần</b>, dùng lại cho mọi video, không lo bản quyền. Cần tài khoản Pollinations có số dư.</p>
+    </div>
+    <div class="panel">
+      <div class="head"><h2>Nhạc nền</h2>
+        <label class="btn primary">⬆ Thêm nhạc<input type="file" accept=".mp3,.m4a,.wav,.ogg" hidden multiple onchange="uploadAudio('music', this)"></label></div>
+      <p class="muted">Mỗi video chọn ngẫu nhiên 1 bài, tự nhỏ lại khi có giọng đọc. Nhạc miễn bản quyền: <a href="https://pixabay.com/music/" target="_blank">Pixabay Music</a>.</p>
+      <div id="musicList"></div>
+    </div>
+    <div class="panel">
+      <h2>Âm thanh không khí</h2>
+      <p class="muted">Tiếng ve, mưa, bếp củi... theo từng tập. Tải miễn phí: <a href="https://pixabay.com/sound-effects/" target="_blank">Pixabay Sound Effects</a>.</p>
+      <div id="sfxList" class="sfx"></div>
+    </div>
+  </section>
+
+  <!-- CÀI ĐẶT -->
+  <section id="tab-settings" class="tab">
+    <div class="head"><h1>Cài đặt</h1><div class="row"><button onclick="checkSetup()">🩺 Kiểm tra</button><button class="primary" onclick="saveSettings()">💾 Lưu</button></div></div>
+    <div class="form" id="settingsForm"></div>
+    <div class="panel">
+      <h2>⏰ Chạy tự động mỗi ngày</h2>
+      <p class="muted">Máy tự tạo video vào giờ đã chọn (máy cần bật). Nếu bật Facebook, video sẽ được hẹn giờ đăng.</p>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="schedOn"> Bật</label>
+        <input type="time" id="schedTime" value="07:00">
+        <button onclick="saveSchedule()">Áp dụng</button>
+        <span id="schedInfo" class="muted"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TÁC VỤ -->
+  <section id="tab-jobs" class="tab">
+    <h1>Tác vụ</h1>
+    <div class="split">
+      <div class="list-col"><div id="jobList" class="slist"></div></div>
+      <div class="edit-col"><pre id="jobLog" class="log">Chọn một tác vụ để xem log.</pre></div>
+    </div>
+  </section>
+</main>
+
+<div id="jobbar" class="jobbar hidden"></div>
+<div id="toast"></div>
+<div id="modal" class="modal hidden" onclick="if(event.target===this)closeModal()"><div class="modal-box" id="modalBox"></div></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

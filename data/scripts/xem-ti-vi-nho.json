@@ -1,0 +1,57 @@
+{
+  "id": "xem-ti-vi-nho",
+  "topic": "Cả xóm đi xem ti vi nhờ",
+  "title": "Cả xóm xem ti vi thì mất điện",
+  "hook": "Cả xóm xem ti vi... thì MẤT ĐIỆN",
+  "ambience": "dem_que",
+  "scenes": [
+    {
+      "text": "Tối nào sân nhà ông cũng chật kín người, cả xóm kéo sang xem ti vi.",
+      "images": [
+        "villagers and kids sitting on straw mats in front of an old house in the evening watching a small old television through the open door, warm lantern light, {BIN} in the front row"
+      ]
+    },
+    {
+      "text": "Hình bị nhiễu, ông trèo lên mái xoay ăng-ten, Bin đứng dưới hét: được rồi ông ơi!",
+      "images": [
+        "{ONG} on a ladder turning a TV antenna on a bamboo pole on a tiled roof at dusk, {BIN} below shouting with hands cupped around mouth"
+      ],
+      "motion": "grandpa turns the antenna on the roof while Bin jumps and shouts below"
+    },
+    {
+      "text": "Vừa nét hình thì... phụt, mất điện!",
+      "images": [
+        "{BIN} and {BANBE} making funny exaggerated disappointed faces in front of a blank old television, candle light"
+      ]
+    },
+    {
+      "speaker": "ba",
+      "text": "Thôi, lại đây bà kể chuyện cổ tích cho mà nghe.",
+      "images": [
+        "{BA} lighting an oil lamp and smiling, kids gathering around her"
+      ]
+    },
+    {
+      "text": "Thế là cả bọn quây quanh ngọn đèn dầu, nghe bà kể đến ngủ gục.",
+      "images": [
+        "{BA} telling a story by a glowing oil lamp to {BIN} and {BANBE}, eyes wide, cozy"
+      ],
+      "motion": "grandma tells a story with gentle hand gestures, kids listen wide-eyed, lamp flickers"
+    },
+    {
+      "text": "Hồi đó bạn hay đi xem nhờ ti vi nhà ai?",
+      "images": [
+        "{ONG} carrying a sleeping {BIN} on his shoulder along a village lane in the evening, warm lantern light"
+      ]
+    }
+  ],
+  "caption": "Mất điện đúng đoạn gay cấn, may mà có bà kể chuyện 📺 Bạn từng xem nhờ ti vi nhà ai?",
+  "hashtags": [
+    "#hatgaoque",
+    "#8x9x",
+    "#tuoitho",
+    "#ongba",
+    "#hoathinh",
+    "#tivi"
+  ]
+}
