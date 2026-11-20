@@ -189,29 +189,17 @@ def _has_cuda() -> bool:
 
 
 def _local(prompt: str, seed: int, cfg: dict) -> Image.Image:
-    global _pipe
-    import torch
-    from diffusers import AutoPipelineForText2Image
+    """Tạo ảnh trên card NVIDIA của máy (SDXL + IP-Adapter giữ đúng mặt theo ảnh mẫu). Lỗi -> Pollinations."""
+    from . import local_gpu
 
-    icfg = cfg["images"]
-    if _pipe is None:
-        log(f"  Đang nạp model {icfg['local_model']} (lần đầu sẽ tải ~7GB)...")
-        _pipe = AutoPipelineForText2Image.from_pretrained(icfg["local_model"], torch_dtype=torch.float16)
-        vram_gb = torch.cuda.get_device_properties(0).total_memory / 1024**3
-        if vram_gb < 11:
-            _pipe.enable_model_cpu_offload()
-        else:
-            _pipe.to("cuda")
-    gen = torch.Generator("cuda").manual_seed(seed)
-    return _pipe(
-        prompt=f"{brighten(prompt)}, {style_text(cfg)}",
-        negative_prompt=NEGATIVE,
-        width=768,
-        height=1344,
-        num_inference_steps=int(icfg.get("local_steps", 28)),
-        guidance_scale=float(icfg.get("local_guidance", 5.0)),
-        generator=gen,
-    ).images[0]
+    refs = [ASSETS / "characters" / f"{k}.png" for k in char_keys(prompt)]
+    refs = [p for p in refs if p.exists()]
+    full = f"{style_text(cfg)}, {brighten(prompt)}"
+    try:
+        return local_gpu.image(full, seed, cfg, refs)
+    except Exception as e:
+        log(f"  [GPU] tạo ảnh lỗi, chuyển sang Pollinations: {e}")
+        return _pollinations(prompt, seed, cfg)
 
 
 def _pollinations(prompt: str, seed: int, cfg: dict) -> Image.Image:
@@ -290,7 +278,7 @@ def generate(script: dict, work: Path, cfg: dict) -> list[Path]:
     has_token = bool(os.environ.get("POLLINATIONS_TOKEN", "").strip())
     cache = DATA / "image_cache"
     cache.mkdir(parents=True, exist_ok=True)
-    tier = "key" if has_token else "free"
+    tier = "gpu" if provider == "local" else ("key" if has_token else "free")
     log(f"Ảnh: cần {len(flat)} ảnh, tạo bằng {provider} ({tier})")
     _COST["images"] = 0.0
     need_wait = False

@@ -40,7 +40,7 @@ def build(script: dict, cfg: dict) -> Path:
     log(f"=== Bắt đầu: {script['title']} ===")
     wavs = tts.synth_scenes(script["scenes"], work, cfg)
     imgs = images.generate(script, work, cfg)
-    clips = motion.animate(script, imgs, work, cfg)
+    clips = motion.animate(script, imgs, work, cfg, wavs)
     end = outro.scene(cfg)
     if end:
         from PIL import Image
@@ -228,13 +228,49 @@ def main() -> int:
     au.add_argument("--redo", action="store_true", help="Tạo lại cả file đã có")
     sub.add_parser("sync", help="Lấy số liệu + bình luận Facebook, AI soạn trả lời")
     sub.add_parser("outro", help="Tạo (lại) ảnh cảnh kết: Bin vẫy tay")
+    sub.add_parser("gpu-test", help="Kiểm tra card NVIDIA: tạo thử 1 ảnh + 1 clip trên máy")
     wb = sub.add_parser("web", help="Mở trang quản lý trên trình duyệt")
     wb.add_argument("--no-browser", action="store_true")
     args = p.parse_args()
     cfg = load_config()
     return {"run": cmd_run, "make": cmd_make, "post": cmd_post, "check": cmd_check, "status": cmd_status,
             "characters": cmd_characters, "write": cmd_write, "sample": cmd_sample, "web": cmd_web,
-            "audio-ai": cmd_audio_ai, "sync": cmd_sync, "outro": cmd_outro}[args.cmd](args, cfg)
+            "audio-ai": cmd_audio_ai, "sync": cmd_sync, "outro": cmd_outro, "gpu-test": cmd_gpu_test}[args.cmd](args, cfg)
+
+
+def cmd_gpu_test(args, cfg) -> int:
+    import time as _t
+
+    from . import local_gpu
+
+    gi = local_gpu.info()
+    print("GPU:", gi)
+    if not gi.get("cuda"):
+        print("=> Chưa dùng được GPU. Cài driver NVIDIA mới nhất rồi chạy setup-gpu.bat.")
+        return 1
+    out = OUTPUT / "gpu_test"
+    out.mkdir(parents=True, exist_ok=True)
+    prompt = "{BIN} running happily along a sunny village lane holding a paper kite, {BA} smiling at the gate"
+    t0 = _t.time()
+    try:
+        img = images._local(prompt, 1234, cfg)
+        images.finish(img, False).save(out / "anh_thu.jpg", quality=92)
+        print(f"Ảnh: OK sau {_t.time() - t0:.0f}s -> {out / 'anh_thu.jpg'}")
+    except Exception:
+        traceback.print_exc()
+        return 1
+    local_gpu.release()
+    t1 = _t.time()
+    try:
+        local_gpu.video(out / "anh_thu.jpg", "3D animated cartoon, Bin runs happily and waves, grandma laughs, smooth motion",
+                        out / "clip_thu.mp4", 4, cfg)
+        print(f"Clip: OK sau {_t.time() - t1:.0f}s -> {out / 'clip_thu.mp4'}")
+    except Exception:
+        traceback.print_exc()
+        print("=> Clip lỗi. Gửi log này để được sửa; video vẫn chạy được bằng ảnh tĩnh hoặc Seedance.")
+        return 1
+    print("=> GPU sẵn sàng: ảnh + cử động sẽ chạy trên máy, miễn phí, mọi cảnh đều có cử động.")
+    return 0
 
 
 def cmd_outro(args, cfg) -> int:

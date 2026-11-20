@@ -1,8 +1,9 @@
-# Chỉ cài nếu máy có card NVIDIA. Cài torch bản CUDA trước:
-#   .venv\Scripts\pip install torch --index-url https://download.pytorch.org/whl/cu128
-# rồi:
-#   .venv\Scripts\pip install -r requirements-gpu.txt
-diffusers>=0.30
-transformers>=4.44
-accelerate>=0.33
+# Chỉ cho máy có card NVIDIA. Cách dễ nhất: nhấp đúp setup-gpu.bat
+# (tự cài torch bản CUDA trước, rồi tới các thư viện dưới đây)
+diffusers>=0.33
+transformers>=4.46
+accelerate>=1.0
 safetensors>=0.4
+sentencepiece>=0.2
+imageio>=2.34
+imageio-ffmpeg>=0.5

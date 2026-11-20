@@ -217,7 +217,27 @@ def summary():
         "facebook": bool(cfg["publish"]["facebook"].get("enabled")),
         "music": len(music), "sfx": sfx, "budget_vnd": round(cfg.get("budget_usd_per_video", 0.18) * cfg.get("usd_to_vnd", 26000)),
         "running": next((_job_json(j) for j in JOBS.items if j["status"] == "running"), None),
+        "gpu": _gpu_info(),
     })
+
+
+_GPU = None
+
+
+def _gpu_info() -> dict:
+    global _GPU
+    if _GPU is None:
+        from . import local_gpu
+
+        _GPU = local_gpu.info()
+    return _GPU
+
+
+@app.post("/api/gpu-test")
+def gpu_test():
+    global _GPU
+    _GPU = None
+    return jsonify(JOBS.add("Kiểm tra GPU (tạo thử ảnh + clip)", ["gpu-test"]))
 
 
 # ---------- video ----------

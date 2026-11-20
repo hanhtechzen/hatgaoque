@@ -83,8 +83,11 @@ async function loadHome() {
     ["🔑", s.has_key ? "Có" : "Chưa", "key Pollinations"],
     ["📘", s.facebook ? "Bật" : "Tắt", "đăng Facebook tự động"],
     ["💰", s.budget_vnd.toLocaleString("vi-VN") + "đ", "ngân sách / video"],
+    ["🖥️", s.gpu?.cuda ? `${s.gpu.name.replace("NVIDIA GeForce ", "")} · ${s.gpu.vram_gb}GB` : "Chưa dùng", "card đồ họa (AI chạy trên máy)"],
   ].map(([i, n, l]) => `<div class="card"><div class="lbl">${i} ${l}</div><div class="num">${esc(n)}</div></div>`).join("");
   const todo = [];
+  if (!s.gpu?.cuda) todo.push(`<li>Máy có card NVIDIA? Nhấp đúp <b>setup-gpu.bat</b> để ảnh + cử động chạy trên máy, miễn phí, mọi cảnh đều có cử động. (${esc(s.gpu?.reason || "")})</li>`);
+  else todo.push(`<li class="ok">GPU ${esc(s.gpu.name)} sẵn sàng - <a onclick="gpuTest()">chạy thử tạo ảnh + clip</a></li>`);
   if (!s.has_key) todo.push(`<li class="err">Chưa có key Pollinations → vào <a onclick="showTab('settings')">Cài đặt</a>.</li>`);
   if (!s.music) todo.push(`<li class="warn">Chưa có nhạc nền → vào <a onclick="showTab('audio')">Âm thanh</a> tải lên vài bài.</li>`);
   if (s.sfx.length < 3) todo.push(`<li class="warn">Mới có ${s.sfx.length}/8 âm thanh không khí (tiếng ve, mưa, bếp củi...) → <a onclick="showTab('audio')">Âm thanh</a>.</li>`);
@@ -92,6 +95,9 @@ async function loadHome() {
   if (s.scripts_unused < 3) todo.push(`<li class="warn">Sắp hết kịch bản có sẵn (AI sẽ tự viết theo chủ đề). Muốn duyệt trước thì vào <a onclick="showTab('scripts')">Kịch bản</a>.</li>`);
   if (!todo.length) todo.push(`<li class="ok">Mọi thứ đã sẵn sàng ✓</li>`);
   $("#todo").innerHTML = todo.join("");
+}
+function gpuTest() {
+  act(async () => watchJob(await api("/api/gpu-test", { method: "POST" }), (j) => { showTab("jobs"); openJob(j.id); }));
 }
 function runNow(count) {
   const no_post = $("#noPost").checked;
@@ -426,7 +432,7 @@ async function loadSettings() {
       <div class="field"><label>Phong cách ảnh</label><select id="s-style">${[["hoat_hinh_3d", "Hoạt hình 3D"], ["anh_xua_sang", "Ảnh phim xưa"], ["minh_hoa", "Tranh minh họa"], ["anh_that", "Ảnh chụp"]].map(([k, v]) => `<option value="${k}" ${c.images?.style === k ? "selected" : ""}>${v}</option>`).join("")}</select></div>
       <div class="field"><label>Ngân sách tối đa / video (đồng)</label><input id="s-budget" type="number" step="500" value="${vnd}"></div>
       <div class="field"><label>Số video mỗi lần chạy tự động</label><input id="s-count" type="number" min="1" max="10" value="${c.videos_per_run || 1}"></div>
-      <div class="field"><label class="check"><input type="checkbox" id="s-motion" ${m.enabled ? "checked" : ""}> Cảnh cử động thật (Seedance, cần nạp tiền)</label></div>
+      <div class="field"><label class="check"><input type="checkbox" id="s-motion" ${m.enabled ? "checked" : ""}> Cảnh cử động thật (có GPU: chạy trên máy, miễn phí, mọi cảnh; không GPU: Seedance, cần nạp tiền)</label></div>
       <div class="field"><label>Độ nét clip cử động</label><select id="s-res"><option value="480p" ${m.resolution === "480p" ? "selected" : ""}>480p (~1.000đ/clip, được 3 clip)</option><option value="720p" ${m.resolution === "720p" ? "selected" : ""}>720p (~2.200đ/clip, nét hơn)</option></select></div>
       <div class="field"><label>Số clip cử động tối đa / video</label><input id="s-shots" type="number" min="0" max="6" value="${m.max_shots ?? 3}"></div>
     </div></div>

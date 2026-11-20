@@ -30,6 +30,23 @@ Kịch bản ─► Giọng đọc ─► Ảnh 3D giữ đúng nhân vật ─�
 
 > Lần đầu tạo video, tool tự tải model giọng đọc VieNeu (khoảng vài trăm MB). Các lần sau chạy ngay.
 
+### 1b. Máy có card NVIDIA? Bật chế độ GPU (khuyên dùng)
+
+Nhấp đúp **`setup-gpu.bat`** (sau khi đã chạy `setup.bat`). Script tự cài PyTorch bản CUDA và thư viện AI, rồi **tạo thử 1 ảnh + 1 clip** vào `output\gpu_test\`. Lần đầu tải model khoảng 20–30 GB.
+
+Bật GPU xong thì tool tự dùng card, không cần chỉnh gì:
+
+| Phần | Không GPU | Có GPU |
+|---|---|---|
+| Ảnh | Pollinations (online) | **SDXL + IP-Adapter trên máy**: giữ đúng mặt Bin/ông/bà theo ảnh mẫu, 0đ |
+| Cảnh cử động | Seedance, ~1.000đ/clip, tối đa 3 cảnh | **LTX-Video trên máy: tối đa 6 cảnh/video, clip dài vừa câu thoại, 0đ** |
+| Phụ đề | Whisper `small` (CPU) | Whisper `large-v3-turbo` (GPU), khớp từng chữ chính xác hơn |
+
+- Card **từ 12 GB VRAM** chạy thoải mái. Card 8 GB tự giảm độ phân giải clip và chạy tiết kiệm VRAM (chậm hơn).
+- Card lớn (24 GB trở lên) muốn clip đẹp hơn: trong `config.json` đổi `gpu.video_model` thành `Wan-AI/Wan2.1-I2V-14B-480P-Diffusers`.
+- Lỗi GPU ở cảnh nào thì cảnh đó tự lùi về ảnh tĩnh hoặc Pollinations, video vẫn ra.
+- Trang quản lý → Tổng quan có ô **🖥️ card đồ họa** và link **chạy thử**.
+
 ## 2. Các key cần có
 
 | Key | Bắt buộc? | Dùng để | Lấy ở đâu |
@@ -112,6 +129,7 @@ Nhớ bật nhãn **"Nội dung do AI tạo"** khi đăng.
 | `audio-ai [--only music/sfx]` | AI tạo nhạc nền và âm thanh không khí |
 | `post <thư mục output>` | Đăng một video lên Facebook |
 | `sync` | Lấy số liệu và bình luận Facebook |
+| `gpu-test` | Kiểm tra card NVIDIA, tạo thử ảnh + clip |
 | `check` / `status` | Kiểm tra cài đặt / xem danh sách video |
 
 ## 9. Cấu trúc thư mục
@@ -119,6 +137,7 @@ Nhớ bật nhãn **"Nội dung do AI tạo"** khi đăng.
 ```
 hatgaoque/
 ├─ setup.bat, start_web.bat     cài đặt / mở trang quản lý
+├─ setup-gpu.bat                bật chế độ GPU (card NVIDIA)
 ├─ run_daily.bat                 việc chạy mỗi ngày (Task Scheduler gọi)
 ├─ register_task.ps1             đăng ký lịch Windows
 ├─ config.json                   mọi cài đặt (trang web sửa giúp)
@@ -128,7 +147,9 @@ hatgaoque/
 │  ├─ script_gen.py              lấy / nhờ AI viết kịch bản
 │  ├─ tts.py                     giọng đọc (VieNeu, MAI, edge-tts)
 │  ├─ images.py                  ảnh 3D, ảnh mẫu nhân vật, tông màu
-│  ├─ motion.py                  cảnh cử động (Seedance)
+│  ├─ motion.py                  cảnh cử động (GPU trên máy hoặc Seedance)
+│  ├─ local_gpu.py               AI chạy trên card NVIDIA (SDXL, LTX-Video)
+│  ├─ align.py                   khớp phụ đề từng chữ bằng Whisper
 │  ├─ video.py                   dựng video, phụ đề, âm thanh
 │  ├─ outro.py                   cảnh kết mời theo dõi
 │  ├─ growth.py                  lịch theo mùa, số liệu, bình luận, xếp hạng

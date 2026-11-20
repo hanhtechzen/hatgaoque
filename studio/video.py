@@ -117,14 +117,21 @@ def build_ass(script: dict, speech: list[tuple[float, float]], total: float, out
             continue
         ws = _weights(allw)
         unit = (end - start) / sum(ws)
+        exact = scene.get("_word_times")  # từ Whisper (giây tính từ đầu câu) nếu có
+        if exact and len(exact) != len(allw):
+            exact = None
         t = start
         k = 0
         for ci, chunk in enumerate(chunks):
             times = []
             for _ in chunk:
-                d = ws[k] * unit
-                times.append((t, t + d))
-                t += d
+                if exact:
+                    s0, e0 = exact[k]
+                    times.append((start + s0, start + e0))
+                else:
+                    d = ws[k] * unit
+                    times.append((t, t + d))
+                    t += d
                 k += 1
             for wi, (a, b) in enumerate(times):
                 if ci == len(chunks) - 1 and wi == len(chunk) - 1:
@@ -255,6 +262,20 @@ def assemble(script: dict, wavs: list[Path], images: list[list[Path]], out_dir: 
     fonts = work / "fonts"
     fonts.mkdir(exist_ok=True)
     shutil.copy(vcfg.get("font", "C:/Windows/Fonts/arialbd.ttf"), fonts)
+    # Khớp thời điểm từng chữ bằng Whisper (chữ sáng đúng lúc đọc)
+    from . import align
+
+    n_ok = 0
+    for sc, wav in zip(script["scenes"], wavs):
+        if sc.get("_outro"):
+            continue
+        words = [w for c in _chunks(sc["text"], int(vcfg.get("caption_words", 4))) for w in c]
+        wt = align.word_times(wav, words, cfg)
+        if wt:
+            sc["_word_times"] = wt
+            n_ok += 1
+    if n_ok:
+        log(f"  phụ đề khớp Whisper: {n_ok}/{len(wavs)} câu")
     build_ass(script, speech, total, work / "captions.ass", cfg)
 
     # Âm thanh

@@ -64,7 +64,10 @@
     "resolution": "480p",
     "price_per_sec": 0.0099225,
     "clip_sec": 4,
-    "max_shots": 3
+    "max_shots": 3,
+    "provider": "auto",
+    "max_shots_local": 6,
+    "clip_sec_local": 4
   },
   "video": {
     "fps": 30,
@@ -104,5 +107,21 @@
   "ai_note": "Hình ảnh minh họa được tạo bằng AI.",
   "growth": {
     "auto_reply": false
+  },
+  "gpu": {
+    "image_model": "Lykon/dreamshaper-xl-v2-turbo",
+    "image_steps": 8,
+    "image_guidance": 2.0,
+    "image_width": 832,
+    "image_height": 1472,
+    "ip_adapter_scale": 0.55,
+    "video_model": "Lightricks/LTX-Video",
+    "video_steps": 30,
+    "video_guidance": 3.0
+  },
+  "subtitles": {
+    "align": "whisper",
+    "whisper_model_cpu": "small",
+    "whisper_model_gpu": "large-v3-turbo"
   }
 }
